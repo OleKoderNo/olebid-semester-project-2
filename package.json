@@ -1,0 +1,29 @@
+{
+  "name": "olebid-semester-project-2",
+  "version": "1.0.0",
+  "description": "OleBid is a student auction platform built with HTML, TypeScript and Tailwind CSS.",
+  "scripts": {
+    "dev": "vite",
+    "typecheck": "tsc --noEmit",
+    "build": "npm run typecheck && vite build",
+    "preview": "vite preview"
+},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OleKoderNo/olebid-semester-project-2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/OleKoderNo/olebid-semester-project-2/issues"
+  },
+  "homepage": "https://github.com/OleKoderNo/olebid-semester-project-2#readme",
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^7.0.2",
+    "vite": "^8.2.2"
+  }
+}
