@@ -3,18 +3,83 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>OleBid | Student auctions</title>
+    <meta
+      name="description"
+      content="Discover student auctions on OleBid. Browse listings and join with your Noroff student account to bid using virtual credits."
+    />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;500;600;700&amp;family=Fraunces:wght@600;700&amp;display=swap"
       rel="stylesheet"
     />
+
     <script type="module" src="/src/main.ts"></script>
   </head>
+
   <body>
-    <h1 class="p-8 font-heading text-4xl font-semibold text-burgundy">
-      Hello, OleBid!
-    </h1>
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:rounded-lg focus:bg-surface focus:px-4 focus:py-3 focus:text-burgundy"
+    >
+      Skip to content
+    </a>
+
+    <header class="bg-surface">
+      <div
+        class="mx-auto flex min-h-20 w-full max-w-308 flex-wrap items-center justify-between gap-4 px-4 py-4 md:min-h-24"
+      >
+        <a href="/" class="font-heading text-[2rem] leading-tight font-bold">
+          OleBid
+        </a>
+
+        <nav aria-label="Main navigation">
+          <ul class="flex flex-wrap items-center gap-4">
+            <li>
+              <a
+                href="/"
+                aria-current="page"
+                class="text-burgundy underline underline-offset-4"
+              >
+                Browse auctions
+              </a>
+            </li>
+
+            <li>
+              <a href="/login/" class="text-burgundy"> Log in </a>
+            </li>
+
+            <li>
+              <a href="/register/" class="text-burgundy"> Register </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main-content" tabindex="-1">
+      <div class="mx-auto w-full max-w-308 px-4 py-8 md:py-12">
+        <h1
+          class="font-heading text-[2rem] leading-tight font-semibold md:text-[2.5rem]"
+        >
+          Find your next favourite.
+        </h1>
+
+        <p class="mt-4 text-lg leading-7 text-muted">
+          Discover student listings and bid with virtual credits.
+        </p>
+      </div>
+    </main>
+
+    <footer>
+      <div
+        class="mx-auto w-full max-w-308 px-4 py-8 text-center text-sm leading-6 text-muted"
+      >
+        <p>OleBid · A student auction project using virtual credits.</p>
+      </div>
+    </footer>
   </body>
 </html>

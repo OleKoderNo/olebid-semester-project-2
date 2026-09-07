@@ -23,5 +23,10 @@
     font-family: var(--font-body);
     background-color: var(--color-ivory);
     color: var(--color-ink);
+    a:focus-visible,
+    button:focus-visible {
+      outline: 3px solid var(--color-ink);
+      outline-offset: 3px;
+    }
   }
 }
