@@ -49,3 +49,12 @@ export interface ListingsResponse {
 
 /** Available sorting choices for auction listings. */
 export type ListingSort = "newest" | "oldest" | "ending-soon";
+
+/** Available auction-status filters. */
+export type ListingStatus = "active" | "all";
+
+/** Filters applied to an auction request. */
+export interface ListingFilters {
+  status: ListingStatus;
+  tag: string;
+}
