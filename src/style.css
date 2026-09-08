@@ -1,1 +1,32 @@
 @import "tailwindcss";
+
+@theme {
+  --font-heading: "Fraunces", Georgia, serif;
+  --font-body: "Atkinson Hyperlegible Next", Arial, sans-serif;
+
+  --color-ivory: #faf7f2;
+  --color-surface: #ffffff;
+  --color-ink: #241f21;
+  --color-muted: #655b60;
+
+  --color-burgundy: #75263d;
+  --color-burgundy-hover: #5b1d30;
+  --color-burgundy-soft: #efe5e8;
+  --color-gold: #e7c46a;
+
+  --color-disabled: #e5dfdc;
+  --color-error: #a12622;
+}
+
+@layer base {
+  body {
+    font-family: var(--font-body);
+    background-color: var(--color-ivory);
+    color: var(--color-ink);
+    a:focus-visible,
+    button:focus-visible {
+      outline: 3px solid var(--color-ink);
+      outline-offset: 3px;
+    }
+  }
+}

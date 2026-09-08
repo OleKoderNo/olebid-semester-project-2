@@ -1,5 +1,6 @@
 import "./style.css";
+import { renderLayout } from "./components/layout";
+import { initNavigation } from "./components/navigation";
 
-const appName: string = "OleBid";
-
-console.log(`${appName} is ready`);
+renderLayout();
+initNavigation();
