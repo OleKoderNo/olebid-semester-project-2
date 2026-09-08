@@ -44,6 +44,40 @@
           Discover student listings and bid with virtual credits.
         </p>
 
+        <form
+          id="listing-search-form"
+          role="search"
+          aria-label="Search auctions"
+          class="mt-10"
+        >
+          <label
+            for="listing-search"
+            class="mb-2 block text-base leading-6 font-medium"
+          >
+            Search auctions
+          </label>
+
+          <div class="flex flex-col gap-4 sm:flex-row">
+            <input
+              id="listing-search"
+              name="q"
+              type="search"
+              placeholder="Search by title or description"
+              class="min-h-13.5 min-w-0 flex-1 rounded-lg border border-muted bg-surface px-4 py-3 text-lg leading-7 placeholder:text-muted focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-ink"
+            />
+
+            <button
+              type="submit"
+              class="min-h-13.5 rounded-lg bg-burgundy px-8 py-3 font-medium text-surface hover:bg-burgundy-hover"
+            >
+              Search
+            </button>
+          </div>
+
+          <p class="mt-2 text-sm leading-6 text-muted">
+            Clear the search and submit again to browse all active auctions.
+          </p>
+        </form>
         <section aria-labelledby="auctions-heading" class="mt-12">
           <h2
             id="auctions-heading"

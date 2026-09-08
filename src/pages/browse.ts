@@ -1,91 +1,82 @@
 import { getListings } from "../api";
-import { createListingCard } from "../components/listing-card";
+import {
+  getListingStatus,
+  renderListingGrid,
+} from "../components/listing-grid";
 
-/**
- * Shows fallback text when a listing image cannot load.
- *
- * @param container - Element containing the rendered cards.
- */
-function initListingImages(container: HTMLElement): void {
-  const images = container.querySelectorAll<HTMLImageElement>(
-    "[data-listing-image]",
-  );
-
-  images.forEach((image) => {
-    const fallback = image.parentElement?.querySelector<HTMLElement>(
-      "[data-image-fallback]",
-    );
-
-    const updateImage = (): void => {
-      const loaded = image.naturalWidth > 0;
-
-      image.hidden = !loaded;
-
-      if (fallback) {
-        fallback.hidden = loaded;
-      }
-    };
-
-    image.addEventListener("load", updateImage, { once: true });
-    image.addEventListener("error", updateImage, { once: true });
-
-    if (image.complete) {
-      updateImage();
-    }
-  });
+interface BrowseElements {
+  grid: HTMLUListElement;
+  status: HTMLParagraphElement;
+  retryButton: HTMLButtonElement;
+  searchForm: HTMLFormElement;
+  searchInput: HTMLInputElement;
 }
 
 /**
- * Initialises the browsing page and loads its first page of auctions.
- * Includes loading, empty, error and retry feedback.
+ * Finds the elements required by the browsing page.
+ *
+ * @returns Page elements, or null when the page is unavailable.
  */
-export function initBrowsePage(): void {
+function getBrowseElements(): BrowseElements | null {
   const grid = document.querySelector<HTMLUListElement>("#listing-grid");
-
   const status =
     document.querySelector<HTMLParagraphElement>("#listing-status");
-
   const retryButton =
     document.querySelector<HTMLButtonElement>("#listing-retry");
+  const searchForm = document.querySelector<HTMLFormElement>(
+    "#listing-search-form",
+  );
+  const searchInput =
+    document.querySelector<HTMLInputElement>("#listing-search");
 
-  if (!grid || !status || !retryButton) {
+  if (!grid || !status || !retryButton || !searchForm || !searchInput) {
+    return null;
+  }
+
+  return { grid, status, retryButton, searchForm, searchInput };
+}
+
+/**
+ * Initialises auction browsing, search and retry behaviour.
+ * Cancels earlier requests when a new search is submitted.
+ */
+export function initBrowsePage(): void {
+  const elements = getBrowseElements();
+
+  if (!elements) {
     return;
   }
 
-  let isLoading = false;
+  const { grid, status, retryButton, searchForm, searchInput } = elements;
+
+  let currentQuery = "";
+  let activeController: AbortController | undefined;
 
   /**
-   * Requests auctions and updates the results and feedback.
+   * Loads results for the last submitted search.
    */
   async function loadListings(): Promise<void> {
-    if (!grid || !status || !retryButton || isLoading) {
-      return;
-    }
+    activeController?.abort();
 
-    isLoading = true;
+    const controller = new AbortController();
+    activeController = controller;
+
+    const query = currentQuery;
+
     grid.setAttribute("aria-busy", "true");
-    status.textContent = "Loading auctions…";
+    grid.replaceChildren();
+    status.textContent = query ? "Searching auctions…" : "Loading auctions…";
     retryButton.disabled = true;
 
     try {
-      const { data } = await getListings();
+      const response = await getListings(1, query, controller.signal);
 
-      grid.innerHTML = data
-        .map(
-          (listing) => `
-            <li class="min-w-0">
-              ${createListingCard(listing)}
-            </li>
-          `,
-        )
-        .join("");
+      if (controller.signal.aborted) {
+        return;
+      }
 
-      initListingImages(grid);
-
-      status.textContent =
-        data.length === 0
-          ? "No active auctions are available right now."
-          : `${data.length} auctions loaded.`;
+      renderListingGrid(grid, response.data);
+      status.textContent = getListingStatus(response, query);
 
       if (document.activeElement === retryButton) {
         const firstLink = grid.querySelector<HTMLAnchorElement>("a");
@@ -100,6 +91,10 @@ export function initBrowsePage(): void {
 
       retryButton.hidden = true;
     } catch (error: unknown) {
+      if (controller.signal.aborted) {
+        return;
+      }
+
       status.textContent =
         error instanceof Error
           ? error.message
@@ -107,11 +102,18 @@ export function initBrowsePage(): void {
 
       retryButton.hidden = false;
     } finally {
-      isLoading = false;
-      grid.setAttribute("aria-busy", "false");
-      retryButton.disabled = false;
+      if (!controller.signal.aborted) {
+        grid.setAttribute("aria-busy", "false");
+        retryButton.disabled = false;
+      }
     }
   }
+
+  searchForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    currentQuery = searchInput.value.trim();
+    void loadListings();
+  });
 
   retryButton.addEventListener("click", () => {
     void loadListings();
