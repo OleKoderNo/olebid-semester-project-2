@@ -59,6 +59,8 @@ export function createListingSummary(listing: ListingDetails): string {
     <p class="mt-4 text-base leading-6 text-muted wrap-anywhere">
       Listed by ${seller}
     </p>
+    
+    <div data-listing-gallery class="mt-8 max-w-200"></div>
 
     <div class="mt-8 grid gap-6 lg:grid-cols-3">
       <section class="min-w-0 rounded-xl bg-surface p-6 lg:col-span-2">

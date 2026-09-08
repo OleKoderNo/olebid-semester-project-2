@@ -1,9 +1,10 @@
 import { getListingById } from "../api";
+import { initListingGallery } from "../components/listing-gallery";
 import { createListingSummary } from "../components/listing-summary";
 
 /**
  * Loads the auction identified by the URL's id parameter.
- * Includes missing-ID, loading, error and retry feedback.
+ * Includes gallery initialisation, loading, error and retry feedback.
  */
 export function initListingDetailsPage(): void {
   const content = document.querySelector<HTMLDivElement>("#listing-details");
@@ -27,13 +28,12 @@ export function initListingDetailsPage(): void {
     return;
   }
 
-  // Preserve the narrowed types inside the asynchronous function.
   const elements = { content, status, retryButton };
   const listingId = id;
   let isLoading = false;
 
   /**
-   * Fetches the selected auction and renders its summary.
+   * Fetches the selected auction and renders its summary and gallery.
    */
   async function loadListing(): Promise<void> {
     if (isLoading) {
@@ -45,7 +45,6 @@ export function initListingDetailsPage(): void {
     elements.content.setAttribute("aria-busy", "true");
     elements.status.classList.remove("sr-only");
     elements.status.textContent = "Loading auction…";
-    elements.status.classList.add("sr-only");
     elements.retryButton.disabled = true;
 
     try {
@@ -53,7 +52,19 @@ export function initListingDetailsPage(): void {
 
       elements.content.innerHTML = createListingSummary(data);
 
+      const gallery = elements.content.querySelector<HTMLElement>(
+        "[data-listing-gallery]",
+      );
+
+      if (!gallery) {
+        throw new Error("The listing template is missing its gallery.");
+      }
+
+      initListingGallery(gallery, data.media, data.title.trim() || "Auction");
+
       document.title = `${data.title.trim() || "Auction"} | OleBid`;
+
+      elements.status.classList.add("sr-only");
       elements.status.textContent = "Auction loaded.";
 
       if (document.activeElement === elements.retryButton) {
@@ -69,6 +80,7 @@ export function initListingDetailsPage(): void {
       elements.retryButton.hidden = true;
     } catch (error: unknown) {
       elements.status.classList.remove("sr-only");
+
       elements.status.textContent =
         error instanceof Error
           ? error.message
