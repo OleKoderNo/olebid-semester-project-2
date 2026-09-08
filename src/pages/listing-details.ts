@@ -1,10 +1,11 @@
 import { getListingById } from "../api";
+import { createBidHistory } from "../components/bid-history";
 import { initListingGallery } from "../components/listing-gallery";
 import { createListingSummary } from "../components/listing-summary";
 
 /**
  * Loads the auction identified by the URL's id parameter.
- * Includes gallery initialisation, loading, error and retry feedback.
+ * Includes summary, gallery, bid history and request feedback.
  */
 export function initListingDetailsPage(): void {
   const content = document.querySelector<HTMLDivElement>("#listing-details");
@@ -33,7 +34,7 @@ export function initListingDetailsPage(): void {
   let isLoading = false;
 
   /**
-   * Fetches the selected auction and renders its summary and gallery.
+   * Fetches the auction and renders its details and bid history.
    */
   async function loadListing(): Promise<void> {
     if (isLoading) {
@@ -50,7 +51,10 @@ export function initListingDetailsPage(): void {
     try {
       const { data } = await getListingById(listingId);
 
-      elements.content.innerHTML = createListingSummary(data);
+      elements.content.innerHTML = `
+        ${createListingSummary(data)}
+        ${createBidHistory(data.bids, data._count.bids)}
+      `;
 
       const gallery = elements.content.querySelector<HTMLElement>(
         "[data-listing-gallery]",
