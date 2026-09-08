@@ -46,3 +46,6 @@ export interface ListingsResponse {
   data: Listing[];
   meta: PaginationMeta;
 }
+
+/** Available sorting choices for auction listings. */
+export type ListingSort = "newest" | "oldest" | "ending-soon";
