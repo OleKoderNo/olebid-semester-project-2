@@ -5,13 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>OleBid | Student auctions</title>
+
     <meta
       name="description"
-      content="Discover student auctions on OleBid. Browse listings and join with your Noroff student account to bid using virtual credits."
+      content="Discover student auctions on OleBid. Browse listings and bid on your next favourite with virtual credits."
     />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
     <link
       href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;500;600;700&amp;family=Fraunces:wght@600;700&amp;display=swap"
       rel="stylesheet"
@@ -41,6 +43,80 @@
         <p class="mt-4 text-lg leading-7 text-muted">
           Discover student listings and bid with virtual credits.
         </p>
+
+        <form
+          id="listing-search-form"
+          role="search"
+          aria-label="Search auctions"
+          class="mt-10"
+        >
+          <label
+            for="listing-search"
+            class="mb-2 block text-base leading-6 font-medium"
+          >
+            Search auctions
+          </label>
+
+          <div class="flex flex-col gap-4 sm:flex-row">
+            <input
+              id="listing-search"
+              name="q"
+              type="search"
+              placeholder="Search by title or description"
+              class="min-h-13.5 min-w-0 flex-1 rounded-lg border border-muted bg-surface px-4 py-3 text-lg leading-7 placeholder:text-muted focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-ink"
+            />
+
+            <button
+              type="submit"
+              class="min-h-13.5 rounded-lg bg-burgundy px-8 py-3 font-medium text-surface hover:bg-burgundy-hover"
+            >
+              Search
+            </button>
+          </div>
+
+          <p class="mt-2 text-sm leading-6 text-muted">
+            Clear the search and submit again to remove the search term.
+          </p>
+        </form>
+
+        <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div id="listing-sort"></div>
+        </div>
+
+        <div id="listing-filters" class="mt-6"></div>
+
+        <section aria-labelledby="auctions-heading" class="mt-12">
+          <h2
+            id="auctions-heading"
+            tabindex="-1"
+            class="font-heading text-[1.75rem] leading-9 font-semibold"
+          >
+            Available auctions
+          </h2>
+
+          <p
+            id="listing-status"
+            role="status"
+            aria-atomic="true"
+            class="mt-4 text-base leading-6 text-muted"
+          ></p>
+
+          <button
+            id="listing-retry"
+            type="button"
+            hidden
+            class="mt-4 min-h-12 rounded-lg border border-burgundy px-6 py-3 font-medium text-burgundy hover:bg-burgundy-soft"
+          >
+            Try again
+          </button>
+
+          <ul
+            id="listing-grid"
+            class="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
+          ></ul>
+
+          <div id="listing-pagination" class="mt-8"></div>
+        </section>
       </div>
     </main>
 
