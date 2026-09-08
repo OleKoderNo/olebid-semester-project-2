@@ -1,11 +1,12 @@
 import { getListings } from "../api";
+import { initListingFilters } from "../components/listing-filters";
 import {
   getListingStatus,
   renderListingGrid,
 } from "../components/listing-grid";
 import { initPagination } from "../components/pagination";
 import { initSortSelect } from "../components/sort-select";
-import type { ListingSort } from "../types/listing";
+import type { ListingFilters, ListingSort } from "../types/listing";
 
 interface BrowseElements {
   grid: HTMLUListElement;
@@ -16,6 +17,7 @@ interface BrowseElements {
   paginationContainer: HTMLElement;
   heading: HTMLHeadingElement;
   sortContainer: HTMLElement;
+  filtersContainer: HTMLElement;
 }
 
 /**
@@ -40,6 +42,8 @@ function getBrowseElements(): BrowseElements | null {
   const heading =
     document.querySelector<HTMLHeadingElement>("#auctions-heading");
   const sortContainer = document.querySelector<HTMLElement>("#listing-sort");
+  const filtersContainer =
+    document.querySelector<HTMLElement>("#listing-filters");
 
   if (
     !grid ||
@@ -49,7 +53,8 @@ function getBrowseElements(): BrowseElements | null {
     !searchInput ||
     !paginationContainer ||
     !heading ||
-    !sortContainer
+    !sortContainer ||
+    !filtersContainer
   ) {
     return null;
   }
@@ -63,11 +68,12 @@ function getBrowseElements(): BrowseElements | null {
     paginationContainer,
     heading,
     sortContainer,
+    filtersContainer,
   };
 }
 
 /**
- * Initialises browsing, search, sorting, pagination and retry behaviour.
+ * Connects browsing controls to auction requests and results.
  * Cancels earlier requests when a new request starts.
  */
 export function initBrowsePage(): void {
@@ -86,11 +92,13 @@ export function initBrowsePage(): void {
     paginationContainer,
     heading,
     sortContainer,
+    filtersContainer,
   } = elements;
 
   let currentQuery = "";
   let requestedPage = 1;
   let currentSort: ListingSort = "newest";
+  let currentFilters: ListingFilters = { status: "active", tag: "" };
   let activeController: AbortController | undefined;
 
   const pagination = initPagination(
@@ -118,8 +126,14 @@ export function initBrowsePage(): void {
     },
   });
 
+  initListingFilters(filtersContainer, (filters) => {
+    currentFilters = filters;
+    requestedPage = 1;
+    void loadListings();
+  });
+
   /**
-   * Loads the requested page using the current search and sorting.
+   * Loads results using the submitted search, sorting and filters.
    */
   async function loadListings(): Promise<void> {
     activeController?.abort();
@@ -130,6 +144,7 @@ export function initBrowsePage(): void {
     const query = currentQuery;
     const page = requestedPage;
     const order = currentSort;
+    const filters = { ...currentFilters };
 
     pagination.hide();
     grid.setAttribute("aria-busy", "true");
@@ -138,14 +153,20 @@ export function initBrowsePage(): void {
     retryButton.disabled = true;
 
     try {
-      const response = await getListings(page, query, controller.signal, order);
+      const response = await getListings(
+        page,
+        query,
+        controller.signal,
+        order,
+        filters,
+      );
 
       if (controller.signal.aborted) {
         return;
       }
 
       renderListingGrid(grid, response.data);
-      status.textContent = getListingStatus(response, query);
+      status.textContent = getListingStatus(response, query, filters);
       pagination.update(response.meta);
 
       if (document.activeElement === retryButton) {

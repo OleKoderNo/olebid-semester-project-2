@@ -1,4 +1,4 @@
-import type { ListingsResponse } from "../types/listing";
+import type { ListingFilters, ListingsResponse } from "../types/listing";
 import { initImageFallbacks } from "../utils/image-fallback";
 import { createListingCard } from "./listing-card";
 
@@ -26,26 +26,31 @@ export function renderListingGrid(
 }
 
 /**
- * Describes the displayed results and current page.
+ * Describes the displayed results and applied filters.
  *
  * @param response - Listings and pagination information.
  * @param query - Submitted search text.
- * @returns Plain text suitable for the page's status element.
+ * @param filters - Applied status and tag filters.
+ * @returns Plain text suitable for the status element.
  */
 export function getListingStatus(
   { data, meta }: ListingsResponse,
   query: string,
+  filters: ListingFilters = { status: "active", tag: "" },
 ): string {
-  if (data.length === 0) {
-    return query
-      ? `No active auctions found for "${query}". Try another search.`
-      : "No active auctions are available on this page.";
-  }
+  const auctionType =
+    filters.status === "active" ? "active auctions" : "auctions";
 
-  const context = query ? ` matching "${query}"` : "";
+  const searchContext = query ? ` matching "${query}"` : "";
+  const tagContext = filters.tag ? ` tagged "${filters.tag}"` : "";
+  const context = `${searchContext}${tagContext}`;
+
+  if (data.length === 0) {
+    return `No ${auctionType}${context} found on this page. Try changing your search or filters.`;
+  }
 
   return (
     `Page ${meta.currentPage} of ${meta.pageCount}. ` +
-    `Showing ${data.length} of ${meta.totalCount} active auctions${context}.`
+    `Showing ${data.length} of ${meta.totalCount} ${auctionType}${context}.`
   );
 }
