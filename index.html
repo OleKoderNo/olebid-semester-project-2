@@ -78,9 +78,11 @@
             Clear the search and submit again to browse all active auctions.
           </p>
         </form>
+
         <section aria-labelledby="auctions-heading" class="mt-12">
           <h2
             id="auctions-heading"
+            tabindex="-1"
             class="font-heading text-[1.75rem] leading-9 font-semibold"
           >
             Available auctions
@@ -106,6 +108,8 @@
             id="listing-grid"
             class="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
           ></ul>
+
+          <div id="listing-pagination" class="mt-8"></div>
         </section>
       </div>
     </main>

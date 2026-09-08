@@ -26,7 +26,7 @@ export function renderListingGrid(
 }
 
 /**
- * Describes the displayed results, including empty searches.
+ * Describes the displayed results and current page.
  *
  * @param response - Listings and pagination information.
  * @param query - Submitted search text.
@@ -39,10 +39,13 @@ export function getListingStatus(
   if (data.length === 0) {
     return query
       ? `No active auctions found for "${query}". Try another search.`
-      : "No active auctions are available right now.";
+      : "No active auctions are available on this page.";
   }
 
   const context = query ? ` matching "${query}"` : "";
 
-  return `Showing ${data.length} of ${meta.totalCount} active auctions${context}.`;
+  return (
+    `Page ${meta.currentPage} of ${meta.pageCount}. ` +
+    `Showing ${data.length} of ${meta.totalCount} active auctions${context}.`
+  );
 }

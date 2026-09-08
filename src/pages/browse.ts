@@ -3,6 +3,7 @@ import {
   getListingStatus,
   renderListingGrid,
 } from "../components/listing-grid";
+import { initPagination } from "../components/pagination";
 
 interface BrowseElements {
   grid: HTMLUListElement;
@@ -10,6 +11,8 @@ interface BrowseElements {
   retryButton: HTMLButtonElement;
   searchForm: HTMLFormElement;
   searchInput: HTMLInputElement;
+  paginationContainer: HTMLElement;
+  heading: HTMLHeadingElement;
 }
 
 /**
@@ -28,17 +31,38 @@ function getBrowseElements(): BrowseElements | null {
   );
   const searchInput =
     document.querySelector<HTMLInputElement>("#listing-search");
+  const paginationContainer = document.querySelector<HTMLElement>(
+    "#listing-pagination",
+  );
+  const heading =
+    document.querySelector<HTMLHeadingElement>("#auctions-heading");
 
-  if (!grid || !status || !retryButton || !searchForm || !searchInput) {
+  if (
+    !grid ||
+    !status ||
+    !retryButton ||
+    !searchForm ||
+    !searchInput ||
+    !paginationContainer ||
+    !heading
+  ) {
     return null;
   }
 
-  return { grid, status, retryButton, searchForm, searchInput };
+  return {
+    grid,
+    status,
+    retryButton,
+    searchForm,
+    searchInput,
+    paginationContainer,
+    heading,
+  };
 }
 
 /**
- * Initialises auction browsing, search and retry behaviour.
- * Cancels earlier requests when a new search is submitted.
+ * Initialises browsing, search, pagination and retry behaviour.
+ * Cancels earlier requests when a new request starts.
  */
 export function initBrowsePage(): void {
   const elements = getBrowseElements();
@@ -47,13 +71,32 @@ export function initBrowsePage(): void {
     return;
   }
 
-  const { grid, status, retryButton, searchForm, searchInput } = elements;
+  const {
+    grid,
+    status,
+    retryButton,
+    searchForm,
+    searchInput,
+    paginationContainer,
+    heading,
+  } = elements;
 
   let currentQuery = "";
+  let requestedPage = 1;
   let activeController: AbortController | undefined;
 
+  const pagination = initPagination(
+    paginationContainer,
+    (page) => {
+      requestedPage = page;
+      heading.focus();
+      void loadListings();
+    },
+    "Auction results pages",
+  );
+
   /**
-   * Loads results for the last submitted search.
+   * Loads the requested page for the last submitted search.
    */
   async function loadListings(): Promise<void> {
     activeController?.abort();
@@ -62,14 +105,16 @@ export function initBrowsePage(): void {
     activeController = controller;
 
     const query = currentQuery;
+    const page = requestedPage;
 
+    pagination.hide();
     grid.setAttribute("aria-busy", "true");
     grid.replaceChildren();
-    status.textContent = query ? "Searching auctions…" : "Loading auctions…";
+    status.textContent = `Loading page ${page}…`;
     retryButton.disabled = true;
 
     try {
-      const response = await getListings(1, query, controller.signal);
+      const response = await getListings(page, query, controller.signal);
 
       if (controller.signal.aborted) {
         return;
@@ -77,16 +122,10 @@ export function initBrowsePage(): void {
 
       renderListingGrid(grid, response.data);
       status.textContent = getListingStatus(response, query);
+      pagination.update(response.meta);
 
       if (document.activeElement === retryButton) {
-        const firstLink = grid.querySelector<HTMLAnchorElement>("a");
-
-        if (firstLink) {
-          firstLink.focus();
-        } else {
-          status.tabIndex = -1;
-          status.focus();
-        }
+        heading.focus();
       }
 
       retryButton.hidden = true;
@@ -111,7 +150,10 @@ export function initBrowsePage(): void {
 
   searchForm.addEventListener("submit", (event) => {
     event.preventDefault();
+
     currentQuery = searchInput.value.trim();
+    requestedPage = 1;
+
     void loadListings();
   });
 
