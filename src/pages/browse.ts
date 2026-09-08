@@ -4,6 +4,8 @@ import {
   renderListingGrid,
 } from "../components/listing-grid";
 import { initPagination } from "../components/pagination";
+import { initSortSelect } from "../components/sort-select";
+import type { ListingSort } from "../types/listing";
 
 interface BrowseElements {
   grid: HTMLUListElement;
@@ -13,6 +15,7 @@ interface BrowseElements {
   searchInput: HTMLInputElement;
   paginationContainer: HTMLElement;
   heading: HTMLHeadingElement;
+  sortContainer: HTMLElement;
 }
 
 /**
@@ -36,6 +39,7 @@ function getBrowseElements(): BrowseElements | null {
   );
   const heading =
     document.querySelector<HTMLHeadingElement>("#auctions-heading");
+  const sortContainer = document.querySelector<HTMLElement>("#listing-sort");
 
   if (
     !grid ||
@@ -44,7 +48,8 @@ function getBrowseElements(): BrowseElements | null {
     !searchForm ||
     !searchInput ||
     !paginationContainer ||
-    !heading
+    !heading ||
+    !sortContainer
   ) {
     return null;
   }
@@ -57,11 +62,12 @@ function getBrowseElements(): BrowseElements | null {
     searchInput,
     paginationContainer,
     heading,
+    sortContainer,
   };
 }
 
 /**
- * Initialises browsing, search, pagination and retry behaviour.
+ * Initialises browsing, search, sorting, pagination and retry behaviour.
  * Cancels earlier requests when a new request starts.
  */
 export function initBrowsePage(): void {
@@ -79,10 +85,12 @@ export function initBrowsePage(): void {
     searchInput,
     paginationContainer,
     heading,
+    sortContainer,
   } = elements;
 
   let currentQuery = "";
   let requestedPage = 1;
+  let currentSort: ListingSort = "newest";
   let activeController: AbortController | undefined;
 
   const pagination = initPagination(
@@ -95,8 +103,23 @@ export function initBrowsePage(): void {
     "Auction results pages",
   );
 
+  initSortSelect<ListingSort>(sortContainer, {
+    label: "Sort auctions",
+    initialValue: currentSort,
+    options: [
+      { value: "newest", label: "Newest first" },
+      { value: "oldest", label: "Oldest first" },
+      { value: "ending-soon", label: "Ending soon" },
+    ],
+    onChange: (value) => {
+      currentSort = value;
+      requestedPage = 1;
+      void loadListings();
+    },
+  });
+
   /**
-   * Loads the requested page for the last submitted search.
+   * Loads the requested page using the current search and sorting.
    */
   async function loadListings(): Promise<void> {
     activeController?.abort();
@@ -106,6 +129,7 @@ export function initBrowsePage(): void {
 
     const query = currentQuery;
     const page = requestedPage;
+    const order = currentSort;
 
     pagination.hide();
     grid.setAttribute("aria-busy", "true");
@@ -114,7 +138,7 @@ export function initBrowsePage(): void {
     retryButton.disabled = true;
 
     try {
-      const response = await getListings(page, query, controller.signal);
+      const response = await getListings(page, query, controller.signal, order);
 
       if (controller.signal.aborted) {
         return;
