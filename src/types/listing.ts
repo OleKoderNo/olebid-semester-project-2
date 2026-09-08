@@ -58,3 +58,20 @@ export interface ListingFilters {
   status: ListingStatus;
   tag: string;
 }
+
+/** Seller information displayed on an auction page. */
+export interface ListingSeller {
+  name: string;
+  bio: string | null;
+  avatar: ListingMedia | null;
+}
+
+/** An auction requested with seller information and bids. */
+export interface ListingDetails extends Listing {
+  seller?: ListingSeller | null;
+}
+
+/** The response returned when requesting one auction. */
+export interface ListingDetailsResponse {
+  data: ListingDetails;
+}
