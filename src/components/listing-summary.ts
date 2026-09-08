@@ -59,7 +59,7 @@ export function createListingSummary(listing: ListingDetails): string {
     <p class="mt-4 text-base leading-6 text-muted wrap-anywhere">
       Listed by ${seller}
     </p>
-    
+
     <div data-listing-gallery class="mt-8 max-w-200"></div>
 
     <div class="mt-8 grid gap-6 lg:grid-cols-3">
@@ -102,6 +102,7 @@ export function createListingSummary(listing: ListingDetails): string {
             </dd>
           </div>
         </dl>
+        <div data-bidding-controls class="mt-6"></div>
       </section>
     </div>
   `;
