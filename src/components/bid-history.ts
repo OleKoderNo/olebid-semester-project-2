@@ -34,12 +34,50 @@ function createBidDate(value: string): string {
 }
 
 /**
- * Creates one row of bid history.
+ * Creates a stacked bid entry for smaller screens.
+ *
+ * @param bid - Bid to display.
+ * @returns A list item containing labelled bid information.
+ */
+function createMobileBid(bid: ListingBid): string {
+  const bidder = escapeHtml(bid.bidder?.name || "Unavailable");
+  const amount = creditFormatter.format(bid.amount);
+
+  return `
+    <li class="p-5">
+      <dl class="grid min-w-0 grid-cols-2 gap-4">
+        <div class="min-w-0">
+          <dt class="text-sm leading-6 text-muted">Bidder</dt>
+          <dd class="mt-1 font-medium wrap-anywhere">
+            ${bidder}
+          </dd>
+        </div>
+
+        <div class="min-w-0 text-right">
+          <dt class="text-sm leading-6 text-muted">Bid amount</dt>
+          <dd class="mt-1 font-bold wrap-anywhere">
+            ${amount} credits
+          </dd>
+        </div>
+
+        <div class="col-span-2 min-w-0">
+          <dt class="text-sm leading-6 text-muted">Date and time</dt>
+          <dd class="mt-1 text-sm leading-6 wrap-anywhere">
+            ${createBidDate(bid.created)}
+          </dd>
+        </div>
+      </dl>
+    </li>
+  `;
+}
+
+/**
+ * Creates one row for the desktop bid table.
  *
  * @param bid - Bid to display.
  * @returns Table row with escaped bidder information.
  */
-function createBidRow(bid: ListingBid): string {
+function createDesktopBid(bid: ListingBid): string {
   const bidder = escapeHtml(bid.bidder?.name || "Unavailable");
 
   return `
@@ -51,11 +89,11 @@ function createBidRow(bid: ListingBid): string {
         ${bidder}
       </th>
 
-      <td class="px-6 py-4 font-semibold">
+      <td class="px-6 py-4 font-semibold wrap-anywhere">
         ${creditFormatter.format(bid.amount)} credits
       </td>
 
-      <td class="px-6 py-4 text-muted">
+      <td class="px-6 py-4 text-muted wrap-anywhere">
         ${createBidDate(bid.created)}
       </td>
     </tr>
@@ -63,7 +101,7 @@ function createBidRow(bid: ListingBid): string {
 }
 
 /**
- * Creates bid history ordered from newest to oldest.
+ * Creates responsive bid history ordered from newest to oldest.
  * The original bids array is left unchanged.
  *
  * @param bids - Bids returned by the API, if included.
@@ -74,29 +112,24 @@ export function createBidHistory(
   bids: ListingBid[] | undefined,
   bidCount: number,
 ): string {
-  if (bidCount === 0) {
+  const heading = `
+    <h2 class="font-heading text-[1.75rem] leading-9 font-semibold">
+      Bid history
+    </h2>
+  `;
+
+  if (bidCount === 0 || !bids?.length) {
+    const message =
+      bidCount === 0
+        ? "No bids have been placed yet."
+        : "Bid history is currently unavailable. Please reload the page.";
+
     return `
       <section class="mt-10">
-        <h2 class="font-heading text-[1.75rem] leading-9 font-semibold">
-          Bid history
-        </h2>
+        ${heading}
 
         <p class="mt-4 rounded-xl bg-surface p-6 text-lg leading-7 text-muted">
-          No bids have been placed yet.
-        </p>
-      </section>
-    `;
-  }
-
-  if (!bids?.length) {
-    return `
-      <section class="mt-10">
-        <h2 class="font-heading text-[1.75rem] leading-9 font-semibold">
-          Bid history
-        </h2>
-
-        <p class="mt-4 rounded-xl bg-surface p-6 text-lg leading-7 text-muted">
-          Bid history is currently unavailable. Please reload the page.
+          ${message}
         </p>
       </section>
     `;
@@ -111,32 +144,31 @@ export function createBidHistory(
 
   return `
     <section class="mt-10">
-      <h2 class="font-heading text-[1.75rem] leading-9 font-semibold">
-        Bid history
-      </h2>
+      ${heading}
 
       <p class="mt-2 text-sm leading-6 text-muted">
         Newest bids first. Times are shown in Norwegian time.
-        On smaller screens, scroll the table horizontally.
       </p>
 
-      <div
-        role="region"
-        aria-label="Bid history table"
-        tabindex="0"
-        class="mt-4 overflow-x-auto rounded-xl bg-surface focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-ink"
+      <ul
+        aria-label="Auction bids, newest first"
+        class="mt-4 divide-y divide-disabled rounded-xl bg-surface text-base leading-6 md:hidden"
       >
-        <table class="w-full min-w-160 text-left text-base leading-6">
+        ${sortedBids.map(createMobileBid).join("")}
+      </ul>
+
+      <div class="mt-4 hidden rounded-xl bg-surface md:block">
+        <table class="w-full table-fixed text-left text-base leading-6">
           <caption class="sr-only">
             Auction bids, ordered from newest to oldest
           </caption>
 
           <thead>
             <tr>
-              <th scope="col" class="px-6 py-4 font-medium">
+              <th scope="col" class="w-1/3 px-6 py-4 font-medium">
                 Bidder
               </th>
-              <th scope="col" class="px-6 py-4 font-medium">
+              <th scope="col" class="w-1/4 px-6 py-4 font-medium">
                 Bid amount
               </th>
               <th scope="col" class="px-6 py-4 font-medium">
@@ -146,7 +178,7 @@ export function createBidHistory(
           </thead>
 
           <tbody>
-            ${sortedBids.map(createBidRow).join("")}
+            ${sortedBids.map(createDesktopBid).join("")}
           </tbody>
         </table>
       </div>
