@@ -9,6 +9,7 @@ export default defineConfig({
       input: {
         main: "index.html",
         listing: "listing/index.html",
+        register: "register/index.html",
       },
     },
   },
