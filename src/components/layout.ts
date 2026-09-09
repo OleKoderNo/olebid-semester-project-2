@@ -1,18 +1,22 @@
 import headerMarkup from "./header.html?raw";
 import footerMarkup from "./footer.html?raw";
+import { initAuthNavigation } from "./auth-navigation";
 
 /**
- * Removes a trailing slash and index.html so equivalent page URLs match.
+ * Normalises equivalent page paths for navigation matching.
+ *
+ * @param path - URL pathname.
+ * @returns Path without index.html or a trailing slash.
  */
 function normalisePath(path: string): string {
   return path.replace(/\/index\.html$/, "/").replace(/\/$/, "") || "/";
 }
 
 /**
- * Inserts the shared header and footer and identifies the current page.
+ * Inserts the shared layout and initialises account controls.
+ * Call once per page, before initialising mobile navigation.
  *
- * Call once per page, before initialising navigation behaviour.
- * Only trusted, local HTML templates are inserted here.
+ * @throws If the page is missing its layout containers.
  */
 export function renderLayout(): void {
   const headerContainer = document.querySelector<HTMLElement>("#site-header");
@@ -25,7 +29,10 @@ export function renderLayout(): void {
   headerContainer.innerHTML = headerMarkup;
   footerContainer.innerHTML = footerMarkup;
 
+  initAuthNavigation(headerContainer);
+
   const currentPath = normalisePath(window.location.pathname);
+
   const links =
     headerContainer.querySelectorAll<HTMLAnchorElement>("nav a[href]");
 
