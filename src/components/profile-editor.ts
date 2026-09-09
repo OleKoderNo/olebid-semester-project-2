@@ -4,6 +4,7 @@ import { initProfileEditPreviews } from "./profile-edit-preview";
 import { initProfileEditSubmit } from "./profile-edit-submit";
 import { initProfileImages } from "./profile-image";
 import { createProfileSummary } from "./profile-summary";
+import { initUnsavedChanges } from "./unsaved-changes";
 
 /**
  * Displays a profile and connects its editing controls.
@@ -94,12 +95,21 @@ export function initProfileEditor(
 
     initProfileEditPreviews(form, currentProfile.name);
 
+    const unsavedChanges = initUnsavedChanges(form);
+
     initProfileEditSubmit(form, currentProfile, (updatedProfile) => {
+      unsavedChanges.destroy();
+
       currentProfile = updatedProfile;
       showProfile(true, true);
     });
 
     cancelButton.addEventListener("click", () => {
+      if (!unsavedChanges.confirmDiscard()) {
+        return;
+      }
+
+      unsavedChanges.destroy();
       showProfile(true);
     });
 
