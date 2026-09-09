@@ -1,13 +1,14 @@
 import type { AuthSession, LoginUser } from "../types/auth";
+import { isTokenExpired } from "./token";
 
 const SESSION_KEY = "olebid.session";
 
 /**
- * Checks that stored data contains the expected session fields.
- * This validates its structure, not the token's authenticity.
+ * Checks the structure of stored session data.
+ * This does not verify the access token's authenticity.
  *
  * @param value - Parsed browser-storage data.
- * @returns Whether the value has the required session fields.
+ * @returns Whether the required fields are present.
  */
 function isAuthSession(value: unknown): value is AuthSession {
   if (typeof value !== "object" || value === null) {
@@ -28,10 +29,10 @@ function isAuthSession(value: unknown): value is AuthSession {
 }
 
 /**
- * Saves the account information needed between page loads.
+ * Saves account information after login.
  *
- * @param user - Account information returned by a successful login.
- * @throws If the session is invalid or browser storage is unavailable.
+ * @param user - Account information returned by the API.
+ * @throws If the session is unusable or storage is unavailable.
  */
 export function saveSession(user: LoginUser): void {
   const session: AuthSession = {
@@ -40,15 +41,15 @@ export function saveSession(user: LoginUser): void {
     accessToken: user.accessToken,
   };
 
-  if (!isAuthSession(session)) {
-    throw new Error("The login response did not contain a valid session.");
+  if (!isAuthSession(session) || isTokenExpired(session.accessToken)) {
+    throw new Error("The login response did not contain a usable session.");
   }
 
   localStorage.setItem(SESSION_KEY, JSON.stringify(session));
 }
 
 /**
- * Reads the saved session, tolerating missing or malformed data.
+ * Reads a session and discards malformed or expired data.
  *
  * @returns Stored account information, or null.
  */
@@ -62,8 +63,8 @@ export function getSession(): AuthSession | null {
 
     const parsed: unknown = JSON.parse(stored);
 
-    if (!isAuthSession(parsed)) {
-      localStorage.removeItem(SESSION_KEY);
+    if (!isAuthSession(parsed) || isTokenExpired(parsed.accessToken)) {
+      clearSession();
       return null;
     }
 
@@ -74,7 +75,7 @@ export function getSession(): AuthSession | null {
 }
 
 /**
- * Removes OleBid's saved session when logging out.
+ * Removes OleBid's saved session.
  */
 export function clearSession(): void {
   localStorage.removeItem(SESSION_KEY);
