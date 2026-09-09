@@ -23,16 +23,6 @@ export function initProfileEditor(
     container.innerHTML = `
       ${createProfileSummary(currentProfile)}
 
-      <div class="mt-6">
-        <button
-          data-profile-edit
-          type="button"
-          class="min-h-12 rounded-lg border border-burgundy px-6 py-3 font-medium text-burgundy hover:bg-burgundy-soft"
-        >
-          Edit profile
-        </button>
-      </div>
-
       <p
         data-profile-save-feedback
         role="status"
@@ -40,9 +30,27 @@ export function initProfileEditor(
       ></p>
     `;
 
+    const actions = container.querySelector<HTMLElement>(
+      "[data-profile-actions]",
+    );
+
+    if (!actions) {
+      throw new Error("Profile summary is missing its actions container.");
+    }
+
+    actions.innerHTML = `
+      <button
+        data-profile-edit
+        type="button"
+        class="min-h-12 rounded-lg border border-burgundy px-6 py-3 font-medium text-burgundy hover:bg-burgundy-soft"
+      >
+        Edit profile
+      </button>
+    `;
+
     initProfileImages(container);
 
-    const editButton = container.querySelector<HTMLButtonElement>(
+    const editButton = actions.querySelector<HTMLButtonElement>(
       "[data-profile-edit]",
     );
 
