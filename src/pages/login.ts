@@ -38,6 +38,9 @@ export function initLoginPage(): void {
   if (reason === "auth-required") {
     status.textContent =
       "Please log in to continue. Your previous session may have expired.";
+  } else if (reason === "session-expired") {
+    status.textContent =
+      "Your session is no longer valid. Please log in again.";
   }
 
   let isSubmitting = false;
