@@ -22,3 +22,13 @@ export interface AuctionProfile {
 export interface ProfileResponse {
   data: AuctionProfile;
 }
+
+/**
+ * Editable profile information sent to the API.
+ * The form always includes a bio; image updates are optional.
+ */
+export interface UpdateProfileRequest {
+  bio: string;
+  avatar?: ProfileImage;
+  banner?: ProfileImage;
+}

@@ -5,7 +5,8 @@ import { createProfileImage } from "./profile-image";
 const numberFormatter = new Intl.NumberFormat("en-US");
 
 /**
- * Creates the profile's banner, overlapping avatar, bio and balance.
+ * Creates the profile's banner, identity, bio and balance.
+ * Includes a container for account actions.
  *
  * @param profile - Account information returned by the API.
  * @returns Escaped profile markup.
@@ -36,9 +37,16 @@ export function createProfileSummary(profile: AuctionProfile): string {
           ${avatar}
         </div>
 
-        <h2 class="min-w-0 font-heading text-3xl leading-tight font-semibold wrap-anywhere sm:pb-2">
-          ${name}
-        </h2>
+        <div class="flex min-w-0 flex-1 flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <h2 class="min-w-0 font-heading text-3xl leading-tight font-semibold wrap-anywhere">
+            ${name}
+          </h2>
+
+          <div
+            data-profile-actions
+            class="flex shrink-0 flex-wrap gap-3 empty:hidden"
+          ></div>
+        </div>
       </div>
 
       <p class="mt-6 text-base leading-7 text-muted whitespace-pre-wrap wrap-anywhere">${bio}</p>
