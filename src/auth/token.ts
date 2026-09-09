@@ -3,7 +3,7 @@
  * This does not verify the token's authenticity.
  *
  * @param token - Access token returned by the API.
- * @returns Expiry time in milliseconds, or null for an invalid payload.
+ * @returns Expiry time in milliseconds, or null if unavailable.
  */
 export function getTokenExpiry(token: string): number | null {
   try {
@@ -38,8 +38,7 @@ export function getTokenExpiry(token: string): number | null {
 
 /**
  * Checks whether a token's declared expiry has passed.
- * A missing expiry does not establish whether a token is valid.
- * The API remains responsible for accepting or rejecting it.
+ * The API remains responsible for accepting or rejecting the token.
  *
  * @param token - Access token to inspect.
  * @returns Whether a readable expiry timestamp has passed.
