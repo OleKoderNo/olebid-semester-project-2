@@ -2,6 +2,7 @@ import { getProfile } from "../api";
 import { requireAuth } from "../auth/require-auth";
 import { getSession } from "../auth/session";
 import { createProfileSummary } from "../components/profile-summary";
+import { initProfileImages } from "../components/profile-image";
 
 /**
  * Loads the signed-in user's profile.
@@ -57,6 +58,7 @@ export function initProfilePage(): void {
       }
 
       elements.content.innerHTML = createProfileSummary(data);
+      initProfileImages(elements.content);
 
       document.title = `${data.name} | OleBid`;
       elements.status.classList.add("sr-only");
