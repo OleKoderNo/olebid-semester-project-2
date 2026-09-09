@@ -1,6 +1,6 @@
 import type { AuctionProfile } from "../types/profile";
 import { createProfileEditForm } from "./profile-edit-form";
-import { initProfileEditValidation } from "./profile-edit-validation";
+import { initProfileEditSubmit } from "./profile-edit-submit";
 import { initProfileImages } from "./profile-image";
 import { createProfileSummary } from "./profile-summary";
 
@@ -14,12 +14,14 @@ export function initProfileEditor(
   container: HTMLElement,
   profile: AuctionProfile,
 ): void {
+  let currentProfile = profile;
+
   /**
    * Restores the profile and optionally focuses its edit button.
    */
-  function showProfile(restoreFocus = false): void {
+  function showProfile(restoreFocus = false, saved = false): void {
     container.innerHTML = `
-      ${createProfileSummary(profile)}
+      ${createProfileSummary(currentProfile)}
 
       <div class="mt-6">
         <button
@@ -30,6 +32,12 @@ export function initProfileEditor(
           Edit profile
         </button>
       </div>
+
+      <p
+        data-profile-save-feedback
+        role="status"
+        class="mt-4 text-sm leading-6 text-muted"
+      ></p>
     `;
 
     initProfileImages(container);
@@ -38,18 +46,26 @@ export function initProfileEditor(
       "[data-profile-edit]",
     );
 
+    const feedback = container.querySelector<HTMLParagraphElement>(
+      "[data-profile-save-feedback]",
+    );
+
     editButton?.addEventListener("click", showEditor);
 
     if (restoreFocus) {
       editButton?.focus();
     }
+
+    if (saved && feedback) {
+      feedback.textContent = "Your profile has been updated.";
+    }
   }
 
   /**
-   * Opens the form using the currently loaded profile.
+   * Opens the form using the latest profile information.
    */
   function showEditor(): void {
-    container.innerHTML = createProfileEditForm(profile);
+    container.innerHTML = createProfileEditForm(currentProfile);
 
     const form = container.querySelector<HTMLFormElement>(
       "[data-profile-edit-form]",
@@ -63,26 +79,13 @@ export function initProfileEditor(
       "[data-profile-edit-cancel]",
     );
 
-    const saveButton = container.querySelector<HTMLButtonElement>(
-      "[data-profile-edit-save]",
-    );
-
-    if (!form || !heading || !cancelButton || !saveButton) {
+    if (!form || !heading || !cancelButton) {
       throw new Error("Profile editor is missing required elements.");
     }
 
-    const validate = initProfileEditValidation(form);
-
-    // Report validation ourselves when submission is connected.
-    form.noValidate = true;
-
-    // Saving will be enabled when the API update is connected.
-    saveButton.disabled = true;
-    saveButton.classList.remove("disabled:cursor-wait");
-
-    form.addEventListener("submit", (event) => {
-      event.preventDefault();
-      validate();
+    initProfileEditSubmit(form, currentProfile, (updatedProfile) => {
+      currentProfile = updatedProfile;
+      showProfile(true, true);
     });
 
     cancelButton.addEventListener("click", () => {
