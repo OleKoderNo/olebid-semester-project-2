@@ -47,6 +47,13 @@ export function initAuthNavigation(header: HTMLElement): void {
       </span>
     </span>
 
+    <span
+      data-credit-balance
+      class="inline-flex min-h-12 min-w-28 items-center text-sm leading-6 text-muted"
+    >
+      Credits: —
+    </span>
+
     <a
       href="/profile/"
       class="flex min-h-12 items-center rounded-lg py-3 font-medium text-burgundy underline-offset-4 hover:underline"
