@@ -37,13 +37,15 @@ export function getTokenExpiry(token: string): number | null {
 }
 
 /**
- * Checks whether a token is expired or has an unreadable expiry.
+ * Checks whether a token's declared expiry has passed.
+ * A missing expiry does not establish whether a token is valid.
+ * The API remains responsible for accepting or rejecting it.
  *
  * @param token - Access token to inspect.
- * @returns Whether the token should be discarded locally.
+ * @returns Whether a readable expiry timestamp has passed.
  */
 export function isTokenExpired(token: string): boolean {
   const expiry = getTokenExpiry(token);
 
-  return expiry === null || expiry <= Date.now();
+  return expiry !== null && expiry <= Date.now();
 }
