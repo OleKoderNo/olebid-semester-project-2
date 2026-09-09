@@ -47,6 +47,13 @@ export function initAuthNavigation(header: HTMLElement): void {
       </span>
     </span>
 
+    <a
+      href="/profile/"
+      class="flex min-h-12 items-center rounded-lg py-3 font-medium text-burgundy underline-offset-4 hover:underline"
+    >
+      My profile
+    </a>
+
     <button
       data-logout
       type="button"
@@ -64,6 +71,7 @@ export function initAuthNavigation(header: HTMLElement): void {
 
   const logoutButton =
     container.querySelector<HTMLButtonElement>("[data-logout]");
+
   const error = container.querySelector<HTMLSpanElement>("[data-logout-error]");
 
   logoutButton?.addEventListener("click", () => {
