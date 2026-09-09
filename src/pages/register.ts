@@ -122,7 +122,7 @@ export function initRegisterPage(): void {
       success.hidden = false;
 
       status.textContent =
-        "Your account has been created. You can log in once the login page is available.";
+        "Your account has been created. Log in to get started.";
       status.tabIndex = -1;
       status.focus();
     } catch (requestError: unknown) {

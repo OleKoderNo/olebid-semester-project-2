@@ -10,6 +10,8 @@ export default defineConfig({
         main: "index.html",
         listing: "listing/index.html",
         register: "register/index.html",
+        login: "login/index.html",
+        profile: "profile/index.html",
       },
     },
   },

@@ -1,3 +1,4 @@
 export { getListings } from "./listings";
 export { getListingById } from "./listing-details";
-export { registerUser } from "./auth";
+export { registerUser, loginUser } from "./auth";
+export { getProfile } from "./profiles";

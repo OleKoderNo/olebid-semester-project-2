@@ -72,10 +72,10 @@ export function createRegistrationForm(): string {
 
     <div data-register-success hidden class="mt-6">
       <a
-        href="/"
-        class="inline-flex min-h-12 items-center rounded-lg border border-burgundy px-6 py-3 font-medium text-burgundy hover:bg-burgundy-soft"
+        href="/login/"
+        class="inline-flex min-h-12 items-center rounded-lg bg-burgundy px-6 py-3 font-medium text-surface hover:bg-burgundy-hover"
       >
-        Back to auctions
+        Log in
       </a>
     </div>
   `;
