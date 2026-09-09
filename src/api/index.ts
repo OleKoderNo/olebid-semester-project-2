@@ -1,4 +1,4 @@
 export { getListings } from "./listings";
 export { getListingById } from "./listing-details";
 export { registerUser, loginUser } from "./auth";
-export { getProfile } from "./profiles";
+export { getProfile, updateProfile } from "./profiles";
