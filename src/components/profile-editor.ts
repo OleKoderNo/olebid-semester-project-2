@@ -1,5 +1,6 @@
 import type { AuctionProfile } from "../types/profile";
 import { createProfileEditForm } from "./profile-edit-form";
+import { initProfileEditPreviews } from "./profile-edit-preview";
 import { initProfileEditSubmit } from "./profile-edit-submit";
 import { initProfileImages } from "./profile-image";
 import { createProfileSummary } from "./profile-summary";
@@ -90,6 +91,8 @@ export function initProfileEditor(
     if (!form || !heading || !cancelButton) {
       throw new Error("Profile editor is missing required elements.");
     }
+
+    initProfileEditPreviews(form, currentProfile.name);
 
     initProfileEditSubmit(form, currentProfile, (updatedProfile) => {
       currentProfile = updatedProfile;
