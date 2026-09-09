@@ -33,6 +33,13 @@ export function initLoginPage(): void {
     throw new Error("Login form is missing required elements.");
   }
 
+  const reason = new URLSearchParams(window.location.search).get("reason");
+
+  if (reason === "auth-required") {
+    status.textContent =
+      "Please log in to continue. Your previous session may have expired.";
+  }
+
   let isSubmitting = false;
 
   form.addEventListener("input", () => {
@@ -73,7 +80,7 @@ export function initLoginPage(): void {
         saveSession(data);
       } catch {
         throw new Error(
-          "Your login succeeded, but this browser could not save your session. Allow site storage and try again.",
+          "Unable to save a usable login session. Please allow site storage and try logging in again.",
         );
       }
 
