@@ -1,5 +1,6 @@
 import type { AuctionProfile } from "../types/profile";
 import { createProfileEditForm } from "./profile-edit-form";
+import { initProfileEditValidation } from "./profile-edit-validation";
 import { initProfileImages } from "./profile-image";
 import { createProfileSummary } from "./profile-summary";
 
@@ -70,12 +71,18 @@ export function initProfileEditor(
       throw new Error("Profile editor is missing required elements.");
     }
 
+    const validate = initProfileEditValidation(form);
+
+    // Report validation ourselves when submission is connected.
+    form.noValidate = true;
+
     // Saving will be enabled when the API update is connected.
     saveButton.disabled = true;
     saveButton.classList.remove("disabled:cursor-wait");
 
     form.addEventListener("submit", (event) => {
       event.preventDefault();
+      validate();
     });
 
     cancelButton.addEventListener("click", () => {
