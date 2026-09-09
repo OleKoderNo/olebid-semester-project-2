@@ -1,9 +1,10 @@
 import { clearSession, getSession } from "../auth/session";
 import { escapeHtml } from "../utils/escape-html";
+import { initCreditBalance } from "./credit-balance";
 
 /**
  * Renders account controls for the current stored session.
- * Connects logout when a session exists.
+ * Loads the credit balance and connects logout for signed-in users.
  *
  * @param header - The rendered shared header.
  * @throws If the account-controls container is missing.
@@ -49,10 +50,10 @@ export function initAuthNavigation(header: HTMLElement): void {
 
     <span
       data-credit-balance
+      role="status"
+      aria-atomic="true"
       class="inline-flex min-h-12 min-w-28 items-center text-sm leading-6 text-muted"
-    >
-      Credits: —
-    </span>
+    ></span>
 
     <a
       href="/profile/"
@@ -76,10 +77,18 @@ export function initAuthNavigation(header: HTMLElement): void {
     ></span>
   `;
 
+  const creditBalance = container.querySelector<HTMLElement>(
+    "[data-credit-balance]",
+  );
+
   const logoutButton =
     container.querySelector<HTMLButtonElement>("[data-logout]");
 
   const error = container.querySelector<HTMLSpanElement>("[data-logout-error]");
+
+  if (creditBalance) {
+    void initCreditBalance(creditBalance);
+  }
 
   logoutButton?.addEventListener("click", () => {
     try {
