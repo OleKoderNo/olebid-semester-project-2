@@ -1,5 +1,5 @@
-import { getProfile } from "../api/profiles";
-import { getSession } from "../auth/session";
+import { getProfile } from "../../api/profiles";
+import { getSession } from "../../auth/session";
 
 const creditFormatter = new Intl.NumberFormat("en-US");
 

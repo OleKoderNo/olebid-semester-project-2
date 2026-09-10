@@ -1,5 +1,5 @@
-import { clearSession, getSession } from "../auth/session";
-import { escapeHtml } from "../utils/escape-html";
+import { clearSession, getSession } from "../../auth/session";
+import { escapeHtml } from "../../utils/escape-html";
 import { initCreditBalance } from "./credit-balance";
 
 /**

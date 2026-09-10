@@ -1,7 +1,7 @@
 import { getListingById } from "../api";
 import { createBidHistory } from "../components/bid-history";
 import { initBidding } from "../components/bidding";
-import { initCreditBalance } from "../components/credit-balance";
+import { initCreditBalance } from "../components/layout/credit-balance";
 import { initListingGallery } from "../components/listing-gallery";
 import { createListingSummary } from "../components/listing-summary";
 
