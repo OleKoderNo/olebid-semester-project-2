@@ -1,6 +1,6 @@
 import { getProfileListings } from "../api";
 import { getSession } from "../auth/session";
-import { renderListingGrid } from "./listing-grid";
+import { renderListingGrid } from "./listings";
 import { initPagination } from "./shared";
 
 /**

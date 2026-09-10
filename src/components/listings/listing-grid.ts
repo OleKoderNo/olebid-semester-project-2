@@ -1,5 +1,5 @@
-import type { ListingFilters, ListingsResponse } from "../types/listing";
-import { initImageFallbacks } from "../utils/image-fallback";
+import type { ListingFilters, ListingsResponse } from "../../types/listing";
+import { initImageFallbacks } from "../../utils/image-fallback";
 import { createListingCard } from "./listing-card";
 
 /**

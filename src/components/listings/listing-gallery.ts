@@ -1,5 +1,5 @@
-import type { ListingMedia } from "../types/listing";
-import { escapeHtml } from "../utils/escape-html";
+import type { ListingMedia } from "../../types/listing";
+import { escapeHtml } from "../../utils/escape-html";
 
 /**
  * Keeps images with valid HTTP or HTTPS URLs.
@@ -34,7 +34,7 @@ function createGalleryMarkup(images: ListingMedia[]): string {
     <section aria-label="Auction photos">
       <div
         data-main-image
-        class="flex aspect-[8/5] items-center justify-center overflow-hidden rounded-xl bg-disabled"
+        class="flex aspect-8/5 items-center justify-center overflow-hidden rounded-xl bg-disabled"
       ></div>
 
       ${

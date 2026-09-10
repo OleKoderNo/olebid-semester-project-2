@@ -1,5 +1,5 @@
-import type { Listing } from "../types/listing";
-import { escapeHtml } from "../utils/escape-html";
+import type { Listing } from "../../types/listing";
+import { escapeHtml } from "../../utils/escape-html";
 
 const creditFormatter = new Intl.NumberFormat("en-US");
 

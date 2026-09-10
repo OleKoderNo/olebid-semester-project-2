@@ -1,9 +1,9 @@
 import { getListings } from "../api";
-import { initListingFilters } from "../components/listing-filters";
 import {
   getListingStatus,
+  initListingFilters,
   renderListingGrid,
-} from "../components/listing-grid";
+} from "../components/listings";
 import { initPagination, initSortSelect } from "../components/shared";
 import type { ListingFilters, ListingSort } from "../types/listing";
 

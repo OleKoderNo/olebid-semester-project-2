@@ -2,8 +2,10 @@ import { getListingById } from "../api";
 import { createBidHistory } from "../components/bid-history";
 import { initBidding } from "../components/bidding";
 import { initCreditBalance } from "../components/layout";
-import { initListingGallery } from "../components/listing-gallery";
-import { createListingSummary } from "../components/listing-summary";
+import {
+  initListingGallery,
+  createListingSummary,
+} from "../components/listings";
 
 /**
  * Loads the auction identified by the URL's id parameter.
