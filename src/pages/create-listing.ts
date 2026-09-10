@@ -2,6 +2,7 @@ import { requireAuth } from "../auth/require-auth";
 import {
   createListingForm,
   initListingImages,
+  initListingDetailsValidation,
 } from "../components/listings/form";
 import { initUnsavedChanges } from "../components/shared";
 
@@ -37,6 +38,7 @@ export function initCreateListingPage(): void {
   }
 
   initListingImages(images);
+  initListingDetailsValidation(form);
 
   const unsavedChanges = initUnsavedChanges(
     form,
