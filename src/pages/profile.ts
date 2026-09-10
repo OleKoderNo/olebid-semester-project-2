@@ -1,6 +1,7 @@
 import { getProfile } from "../api";
 import { requireAuth } from "../auth/require-auth";
 import { getSession } from "../auth/session";
+import { initProfileBids } from "../components/profile-bids";
 import { initProfileEditor } from "../components/profile-editor";
 import { initProfileListings } from "../components/profile-listings";
 
@@ -27,9 +28,14 @@ export function initProfilePage(): void {
   const elements = { content, status, retry };
 
   const activity = document.createElement("div");
+  const listingsContainer = document.createElement("div");
+  const bidsContainer = document.createElement("div");
+
+  activity.append(listingsContainer, bidsContainer);
   elements.content.after(activity);
 
-  initProfileListings(activity, initialSession.name);
+  initProfileListings(listingsContainer, initialSession.name);
+  initProfileBids(bidsContainer, initialSession.name);
 
   let isLoading = false;
 
