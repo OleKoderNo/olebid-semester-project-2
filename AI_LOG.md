@@ -29,3 +29,11 @@ I applied the changes locally in focused commits and used ChatGPT to help resolv
 ChatGPT also drafted the project-structure documentation and README link, covering the agreed folder organisation, naming conventions and import guidelines.
 
 The direction for this PR came from my own experience working in the project. AI assistance helped me implement and document the cleanup while learning more about maintainable module structure.
+
+### Auction listing creation — 10 September 2026
+
+I asked ChatGPT for larger files to be split into smaller modules with clear responsibilities. ChatGPT supplied code suggestions and JSDoc documentation, which I reviewed and incorporated.
+
+I also used ChatGPT to understand how device-local deadlines convert to UTC timestamps for the API and display in each visitor’s local time. I chose to use native JavaScript without adding a date dependency.
+
+I tested the completed creation flow and its validation, error handling, and navigation before preparing the pull request.

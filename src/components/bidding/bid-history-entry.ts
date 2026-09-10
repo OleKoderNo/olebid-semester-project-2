@@ -4,7 +4,6 @@ import { escapeHtml } from "../../utils/escape-html";
 const creditFormatter = new Intl.NumberFormat("en-US");
 
 const dateFormatter = new Intl.DateTimeFormat("en-US", {
-  timeZone: "Europe/Oslo",
   month: "short",
   day: "numeric",
   year: "numeric",
