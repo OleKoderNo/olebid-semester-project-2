@@ -1,4 +1,4 @@
-import { createFormField } from "./shared/form-field";
+import { createFormField } from "./shared";
 
 /**
  * Creates the login form using shared form fields.

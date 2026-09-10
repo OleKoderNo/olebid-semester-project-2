@@ -1,6 +1,6 @@
 import { loginUser } from "../api";
 import { saveSession } from "../auth/session";
-import { initPasswordToggles } from "../components/shared/form-field";
+import { initPasswordToggles } from "../components/shared";
 import { createLoginForm } from "../components/login-form";
 
 /**
