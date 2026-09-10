@@ -29,8 +29,7 @@ export function renderProfileBidsView(
       </h2>
 
       <p class="mt-3 text-sm leading-6 text-muted">
-        Ordered by your newest bids. An auction may appear on more than
-        one page if you have bid on it multiple times.
+        Each auction appears once, ordered by your most recent bid.
       </p>
 
       <p
@@ -72,27 +71,34 @@ export function renderProfileBidsView(
     throw new Error("Profile bidding activity is missing required elements.");
   }
 
-  return { heading, status, retry, grid, paginationContainer };
+  return {
+    heading,
+    status,
+    retry,
+    grid,
+    paginationContainer,
+  };
 }
 
 /**
- * Describes the loaded page of bidding activity.
+ * Describes the loaded page of unique auctions.
  *
- * @param result - Listings and their bid pagination information.
+ * @param result - Auctions and their pagination information.
  * @returns A status message for the section.
  */
 export function getProfileBidsStatus(result: ProfileBidListings): string {
   const { listings, meta, unavailableBidCount } = result;
 
   if (meta.totalCount === 0) {
-    return "You haven't placed any bids yet.";
+    return unavailableBidCount > 0
+      ? "Your bids no longer have associated listings available."
+      : "You haven't placed any bids yet.";
   }
 
   let message =
-    `Bidding activity page ${meta.currentPage} of ${meta.pageCount}. ` +
-    `Showing ${listings.length} ${
-      listings.length === 1 ? "auction" : "auctions"
-    }.`;
+    `Page ${meta.currentPage} of ${meta.pageCount}. ` +
+    `Showing ${listings.length} of ${meta.totalCount} ` +
+    `${meta.totalCount === 1 ? "auction" : "auctions"} you've bid on.`;
 
   if (unavailableBidCount > 0) {
     message += " Some bids no longer have an associated listing available.";

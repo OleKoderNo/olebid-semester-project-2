@@ -1,5 +1,5 @@
 import { getSession } from "../auth/session";
-import { loadProfileBidListings } from "../utils/load-profile-bid-listings";
+import { createProfileBidListingsLoader } from "../utils/load-profile-bid-listings";
 import { renderListingGrid } from "./listing-grid";
 import { initPagination } from "./pagination";
 import {
@@ -8,13 +8,14 @@ import {
 } from "./profile-bids-view";
 
 /**
- * Loads and controls a profile's bidding activity.
+ * Loads and controls a profile's unique auction bidding activity.
  *
  * @param container - Element where the section should appear.
  * @param name - Username whose bidding activity should be displayed.
  */
 export function initProfileBids(container: HTMLElement, name: string): void {
   const elements = renderProfileBidsView(container);
+  const loadListings = createProfileBidListingsLoader(name);
 
   let requestedPage = 1;
   let isLoading = false;
@@ -37,7 +38,7 @@ export function initProfileBids(container: HTMLElement, name: string): void {
   }
 
   /**
-   * Loads auctions for the requested page of bid records.
+   * Loads the requested page of unique auctions.
    */
   async function loadBids(): Promise<void> {
     if (isLoading) {
@@ -60,7 +61,7 @@ export function initProfileBids(container: HTMLElement, name: string): void {
     elements.retry.disabled = true;
 
     try {
-      const result = await loadProfileBidListings(name, requestedPage);
+      const result = await loadListings(requestedPage);
 
       if (!isCurrentSession(session.accessToken)) {
         container.replaceChildren();
