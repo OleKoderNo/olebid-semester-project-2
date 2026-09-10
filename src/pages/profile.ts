@@ -1,14 +1,18 @@
 import { getProfile } from "../api";
 import { requireAuth } from "../auth/require-auth";
 import { getSession } from "../auth/session";
+import { initProfileBids } from "../components/profile-bids";
 import { initProfileEditor } from "../components/profile-editor";
+import { initProfileListings } from "../components/profile-listings";
 
 /**
- * Loads the signed-in user's profile.
- * Requires a session before fetching or rendering account information.
+ * Loads the signed-in user's profile and listing activity.
+ * Requires authentication before displaying account information.
  */
 export function initProfilePage(): void {
-  if (!requireAuth()) {
+  const initialSession = requireAuth();
+
+  if (!initialSession) {
     return;
   }
 
@@ -22,7 +26,26 @@ export function initProfilePage(): void {
   }
 
   const elements = { content, status, retry };
+
+  const activity = document.createElement("div");
+  const listingsContainer = document.createElement("div");
+  const bidsContainer = document.createElement("div");
+
+  activity.append(listingsContainer, bidsContainer);
+  elements.content.after(activity);
+
+  initProfileListings(listingsContainer, initialSession.name);
+  initProfileBids(bidsContainer, initialSession.name);
+
   let isLoading = false;
+
+  /**
+   * Removes displayed account information.
+   */
+  function clearProtectedContent(): void {
+    elements.content.replaceChildren();
+    activity.replaceChildren();
+  }
 
   /**
    * Fetches fresh profile information for the current session.
@@ -35,7 +58,7 @@ export function initProfilePage(): void {
     const session = requireAuth();
 
     if (!session) {
-      elements.content.replaceChildren();
+      clearProtectedContent();
       return;
     }
 
@@ -50,8 +73,8 @@ export function initProfilePage(): void {
     try {
       const { data } = await getProfile(session.name);
 
-      // Do not render an old response after the session has changed.
       if (getSession()?.accessToken !== session.accessToken) {
+        clearProtectedContent();
         window.location.reload();
         return;
       }
@@ -71,6 +94,12 @@ export function initProfilePage(): void {
 
       elements.retry.hidden = true;
     } catch (error: unknown) {
+      if (getSession()?.accessToken !== session.accessToken) {
+        clearProtectedContent();
+        window.location.reload();
+        return;
+      }
+
       elements.status.classList.remove("sr-only");
       elements.status.textContent =
         error instanceof Error
@@ -89,18 +118,18 @@ export function initProfilePage(): void {
     void loadProfile();
   });
 
-  // Recheck authentication if Back restores this page from browser cache.
+  // Recheck authentication when Back restores a cached page.
   window.addEventListener("pageshow", (event) => {
     if (event.persisted) {
-      elements.content.replaceChildren();
+      clearProtectedContent();
       window.location.reload();
     }
   });
 
-  // Remove protected content if another tab changes the login session.
+  // Remove protected content when another tab changes the session.
   window.addEventListener("storage", (event) => {
     if (event.key === "olebid.session" || event.key === null) {
-      elements.content.replaceChildren();
+      clearProtectedContent();
       window.location.reload();
     }
   });
