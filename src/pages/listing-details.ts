@@ -1,11 +1,13 @@
 import { getListingById } from "../api";
 import { createBidHistory } from "../components/bid-history";
+import { initBidding } from "../components/bidding";
+import { initCreditBalance } from "../components/credit-balance";
 import { initListingGallery } from "../components/listing-gallery";
 import { createListingSummary } from "../components/listing-summary";
 
 /**
  * Loads the auction identified by the URL's id parameter.
- * Includes summary, gallery, bid history and request feedback.
+ * Includes summary, gallery, bid history and bidding controls.
  */
 export function initListingDetailsPage(): void {
   const content = document.querySelector<HTMLDivElement>("#listing-details");
@@ -34,11 +36,37 @@ export function initListingDetailsPage(): void {
   let isLoading = false;
 
   /**
-   * Fetches the auction and renders its details and bid history.
+   * Refreshes auction details and header credits after an accepted bid.
    */
-  async function loadListing(): Promise<void> {
+  async function handleBidPlaced(): Promise<void> {
+    const creditBalance = document.querySelector<HTMLElement>(
+      "[data-credit-balance]",
+    );
+
+    if (creditBalance) {
+      void initCreditBalance(creditBalance);
+    }
+
+    const refreshed = await loadListing();
+
+    elements.status.classList.remove("sr-only");
+    elements.status.textContent = refreshed
+      ? "Your bid was placed successfully."
+      : "Your bid was placed, but the auction could not refresh. Use Try again to reload its details.";
+
+    // Restore visible keyboard focus after replacing the bid form.
+    elements.status.tabIndex = -1;
+    elements.status.focus();
+  }
+
+  /**
+   * Fetches and renders the auction.
+   *
+   * @returns Whether the auction was successfully rendered.
+   */
+  async function loadListing(): Promise<boolean> {
     if (isLoading) {
-      return;
+      return false;
     }
 
     isLoading = true;
@@ -59,15 +87,22 @@ export function initListingDetailsPage(): void {
       const gallery = elements.content.querySelector<HTMLElement>(
         "[data-listing-gallery]",
       );
+      const bidding = elements.content.querySelector<HTMLElement>(
+        "[data-bidding-controls]",
+      );
 
-      if (!gallery) {
-        throw new Error("The listing template is missing its gallery.");
+      if (!gallery || !bidding) {
+        throw new Error(
+          "The listing template is missing its gallery or bidding controls.",
+        );
       }
 
-      initListingGallery(gallery, data.media, data.title.trim() || "Auction");
+      const title = data.title.trim() || "Auction";
 
-      document.title = `${data.title.trim() || "Auction"} | OleBid`;
+      initListingGallery(gallery, data.media, title);
+      initBidding(bidding, data, handleBidPlaced);
 
+      document.title = `${title} | OleBid`;
       elements.status.classList.add("sr-only");
       elements.status.textContent = "Auction loaded.";
 
@@ -82,9 +117,9 @@ export function initListingDetailsPage(): void {
       }
 
       elements.retryButton.hidden = true;
+      return true;
     } catch (error: unknown) {
       elements.status.classList.remove("sr-only");
-
       elements.status.textContent =
         error instanceof Error
           ? error.message
@@ -92,6 +127,7 @@ export function initListingDetailsPage(): void {
 
       elements.retryButton.hidden = false;
       document.title = "Unable to load auction | OleBid";
+      return false;
     } finally {
       isLoading = false;
       elements.content.setAttribute("aria-busy", "false");
