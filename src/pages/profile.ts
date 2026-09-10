@@ -1,9 +1,11 @@
 import { getProfile } from "../api";
 import { requireAuth } from "../auth/require-auth";
 import { getSession } from "../auth/session";
-import { initProfileBids } from "../components/profile-bids";
+import {
+  initProfileListings,
+  initProfileBids,
+} from "../components/profile/activity";
 import { initProfileEditor } from "../components/profile";
-import { initProfileListings } from "../components/profile-listings";
 
 /**
  * Loads the signed-in user's profile and listing activity.

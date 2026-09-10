@@ -1,5 +1,5 @@
-import { getListingById, getProfileBids } from "../api";
-import type { ListingDetails, PaginationMeta } from "../types/listing";
+import { getListingById, getProfileBids } from "../../../api";
+import type { ListingDetails, PaginationMeta } from "../../../types/listing";
 
 export interface ProfileBidListings {
   listings: ListingDetails[];

@@ -1,7 +1,7 @@
-import { getProfileListings } from "../api";
-import { getSession } from "../auth/session";
-import { renderListingGrid } from "./listings";
-import { initPagination } from "./shared";
+import { getProfileListings } from "../../../api";
+import { getSession } from "../../../auth/session";
+import { renderListingGrid } from "../../listings";
+import { initPagination } from "../../shared";
 
 /**
  * Displays a profile's listings with pagination and retry controls.

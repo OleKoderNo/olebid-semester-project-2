@@ -1,4 +1,4 @@
-import type { ProfileBidListings } from "../utils/load-profile-bid-listings";
+import type { ProfileBidListings } from "./load-profile-bid-listings";
 
 export interface ProfileBidsElements {
   heading: HTMLHeadingElement;
