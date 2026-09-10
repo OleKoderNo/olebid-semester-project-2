@@ -48,7 +48,7 @@ export function createBidHistory(
       ${heading}
 
       <p class="mt-2 text-sm leading-6 text-muted">
-        Newest bids first. Times are shown in Norwegian time.
+        Newest bids first. Times are shown in your device's local time.
       </p>
 
       <ul

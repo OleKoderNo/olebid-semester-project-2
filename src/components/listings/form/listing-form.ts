@@ -77,7 +77,8 @@ export function createListingForm(): string {
         id="listing-deadline-hint"
         class="text-sm leading-6 text-muted"
       >
-        Enter the deadline in Norwegian time (Europe/Oslo).
+        Enter the deadline in your device’s local time.
+        Each visitor will see it in their own local time.
       </p>
 
       <div data-listing-images></div>
