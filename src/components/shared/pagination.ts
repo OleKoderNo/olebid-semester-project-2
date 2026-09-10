@@ -1,5 +1,5 @@
-import type { PaginationMeta } from "../types/listing";
-import { escapeHtml } from "../utils/escape-html";
+import type { PaginationMeta } from "../../types/listing";
+import { escapeHtml } from "../../utils/escape-html";
 
 interface PaginationControls {
   update: (meta: PaginationMeta) => void;

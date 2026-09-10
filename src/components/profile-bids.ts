@@ -1,7 +1,7 @@
 import { getSession } from "../auth/session";
 import { createProfileBidListingsLoader } from "../utils/load-profile-bid-listings";
 import { renderListingGrid } from "./listing-grid";
-import { initPagination } from "./pagination";
+import { initPagination } from "./shared/pagination";
 import {
   getProfileBidsStatus,
   renderProfileBidsView,

@@ -1,7 +1,7 @@
 import { placeBid } from "../api";
 import { getSession } from "../auth/session";
 import type { ListingDetails } from "../types/listing";
-import { initUnsavedChanges } from "./unsaved-changes";
+import { initUnsavedChanges } from "./shared/unsaved-changes";
 
 /**
  * Connects bid validation, submission and unsaved-change warnings.

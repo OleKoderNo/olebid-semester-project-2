@@ -4,8 +4,8 @@ import {
   getListingStatus,
   renderListingGrid,
 } from "../components/listing-grid";
-import { initPagination } from "../components/pagination";
-import { initSortSelect } from "../components/sort-select";
+import { initPagination } from "../components/shared/pagination";
+import { initSortSelect } from "../components/shared/sort-select";
 import type { ListingFilters, ListingSort } from "../types/listing";
 
 interface BrowseElements {

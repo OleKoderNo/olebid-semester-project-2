@@ -1,5 +1,5 @@
 import { registerUser } from "../api";
-import { initPasswordToggles } from "../components/form-field";
+import { initPasswordToggles } from "../components/shared/form-field";
 import { createRegistrationForm } from "../components/registration-form";
 
 /**

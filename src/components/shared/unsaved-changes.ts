@@ -1,4 +1,4 @@
-import { getFormSnapshot } from "../utils/form-snapshot";
+import { getFormSnapshot } from "../../utils/form-snapshot";
 
 export interface UnsavedChangesGuard {
   confirmDiscard: () => boolean;

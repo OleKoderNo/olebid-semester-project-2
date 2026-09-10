@@ -4,7 +4,7 @@ import { initProfileEditPreviews } from "./profile-edit-preview";
 import { initProfileEditSubmit } from "./profile-edit-submit";
 import { initProfileImages } from "./profile-image";
 import { createProfileSummary } from "./profile-summary";
-import { initUnsavedChanges } from "./unsaved-changes";
+import { initUnsavedChanges } from "./shared/unsaved-changes";
 
 /**
  * Displays a profile and connects its editing controls.

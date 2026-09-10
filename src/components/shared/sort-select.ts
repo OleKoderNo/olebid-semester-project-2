@@ -1,4 +1,4 @@
-import { escapeHtml } from "../utils/escape-html";
+import { escapeHtml } from "../../utils/escape-html";
 
 interface SortOption<T extends string> {
   value: T;

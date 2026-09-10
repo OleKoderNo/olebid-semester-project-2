@@ -1,5 +1,5 @@
 import type { ListingFilters, ListingStatus } from "../types/listing";
-import { initSortSelect } from "./sort-select";
+import { initSortSelect } from "./shared/sort-select";
 
 /**
  * Renders auction filters and connects their submit behaviour.
