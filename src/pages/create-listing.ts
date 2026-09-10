@@ -1,15 +1,18 @@
 import { requireAuth } from "../auth/require-auth";
 import {
   createListingForm,
-  initListingImages,
   initListingDetailsValidation,
+  initListingFormSubmit,
+  initListingImages,
   initListingImageValidation,
 } from "../components/listings/form";
 import { initUnsavedChanges } from "../components/shared";
 
 /**
  * Initializes the protected listing creation page.
- * Connects image controls and unsaved-change warnings.
+ *
+ * Connects image controls, validation, submission, and warnings about
+ * leaving with unsaved changes.
  */
 export function initCreateListingPage(): void {
   if (!requireAuth()) {
@@ -25,38 +28,37 @@ export function initCreateListingPage(): void {
   }
 
   const content = container;
+  content.innerHTML = createListingForm();
 
-  container.innerHTML = createListingForm();
+  const form = content.querySelector<HTMLFormElement>("[data-listing-form]");
+  const images = content.querySelector<HTMLElement>("[data-listing-images]");
 
-  const form = container.querySelector<HTMLFormElement>("[data-listing-form]");
-  const images = container.querySelector<HTMLElement>("[data-listing-images]");
-  const submitButton = container.querySelector<HTMLButtonElement>(
-    "[data-listing-submit]",
-  );
-
-  if (!form || !images || !submitButton) {
-    throw new Error("Create listing form is missing required elements.");
+  if (!form || !images) {
+    throw new Error("Create listing page is missing required form elements.");
   }
 
   initListingImages(images);
-  initListingDetailsValidation(form);
-  initListingImageValidation(form);
+
+  const updateValidity = initListingDetailsValidation(form);
+  const validateImages = initListingImageValidation(form);
 
   const unsavedChanges = initUnsavedChanges(
     form,
-    "You haven't created your listing yet. Discard your changes and leave?",
+    "You haven’t created your listing yet. Discard your changes and leave?",
   );
 
-  // Submission will be enabled after validation and saving are connected.
-  submitButton.disabled = true;
-  submitButton.classList.remove("disabled:cursor-wait");
-
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
+  initListingFormSubmit(form, {
+    updateValidity,
+    validateImages,
+    onCreated: () => {
+      unsavedChanges.destroy();
+    },
   });
 
   /**
-   * Removes the form when its session needs to be rechecked.
+   * Reloads the page so authentication is checked again.
+   *
+   * Clears the old form and its warning before reloading.
    */
   function reloadPage(): void {
     unsavedChanges.destroy();
