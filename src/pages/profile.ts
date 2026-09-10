@@ -2,7 +2,7 @@ import { getProfile } from "../api";
 import { requireAuth } from "../auth/require-auth";
 import { getSession } from "../auth/session";
 import { initProfileBids } from "../components/profile-bids";
-import { initProfileEditor } from "../components/profile-editor";
+import { initProfileEditor } from "../components/profile";
 import { initProfileListings } from "../components/profile-listings";
 
 /**

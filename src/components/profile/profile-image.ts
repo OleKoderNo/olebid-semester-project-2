@@ -1,5 +1,5 @@
-import type { ProfileImage } from "../types/profile";
-import { escapeHtml } from "../utils/escape-html";
+import type { ProfileImage } from "../../types/profile";
+import { escapeHtml } from "../../utils/escape-html";
 
 interface ProfileImageOptions {
   image: ProfileImage | null;
