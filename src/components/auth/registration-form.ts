@@ -1,4 +1,4 @@
-import { createFormField } from "./shared";
+import { createFormField } from "../shared";
 
 /**
  * Creates the student registration form.

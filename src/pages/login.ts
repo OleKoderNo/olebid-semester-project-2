@@ -1,8 +1,7 @@
 import { loginUser } from "../api";
 import { saveSession } from "../auth/session";
 import { initPasswordToggles } from "../components/shared";
-import { createLoginForm } from "../components/login-form";
-
+import { createLoginForm } from "../components/auth";
 /**
  * Renders and connects the login form.
  * Saves the session after successful authentication.
