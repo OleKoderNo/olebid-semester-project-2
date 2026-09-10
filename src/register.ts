@@ -1,6 +1,5 @@
 import "./style.css";
-import { renderLayout } from "./components/layout";
-import { initNavigation } from "./components/navigation";
+import { renderLayout, initNavigation } from "./components/layout";
 import { initRegisterPage } from "./pages/register";
 
 renderLayout();

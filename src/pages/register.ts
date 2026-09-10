@@ -1,7 +1,6 @@
 import { registerUser } from "../api";
-import { initPasswordToggles } from "../components/form-field";
-import { createRegistrationForm } from "../components/registration-form";
-
+import { initPasswordToggles } from "../components/shared";
+import { createRegistrationForm } from "../components/auth";
 /**
  * Renders and connects the student registration form.
  * Validates account details and prevents duplicate submissions.
