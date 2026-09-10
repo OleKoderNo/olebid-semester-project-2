@@ -9,9 +9,13 @@ export interface UnsavedChangesGuard {
  * Warns before leaving a form with unsaved changes.
  *
  * @param form - Form whose initial values represent the saved state.
+ * @param message - Confirmation message for cancellation and link navigation.
  * @returns Controls for confirming cancellation and removing listeners.
  */
-export function initUnsavedChanges(form: HTMLFormElement): UnsavedChangesGuard {
+export function initUnsavedChanges(
+  form: HTMLFormElement,
+  message = "You have unsaved changes. Discard them and leave?",
+): UnsavedChangesGuard {
   const initialSnapshot = getFormSnapshot(form);
 
   let destroyed = false;
@@ -26,10 +30,7 @@ export function initUnsavedChanges(form: HTMLFormElement): UnsavedChangesGuard {
   }
 
   function confirmDiscard(): boolean {
-    return (
-      !hasChanges() ||
-      window.confirm("You have unsaved changes. Discard them and leave?")
-    );
+    return !hasChanges() || window.confirm(message);
   }
 
   function handleBeforeUnload(event: BeforeUnloadEvent): void {

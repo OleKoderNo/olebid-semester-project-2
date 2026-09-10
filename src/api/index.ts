@@ -4,3 +4,4 @@ export { registerUser, loginUser } from "./auth";
 export { getProfile, updateProfile } from "./profiles";
 export { getProfileListings } from "./profile-listings";
 export { getProfileBids } from "./profile-bids";
+export { placeBid } from "./bids";
