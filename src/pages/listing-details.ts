@@ -1,6 +1,5 @@
 import { getListingById } from "../api";
-import { createBidHistory } from "../components/bid-history";
-import { initBidding } from "../components/bidding";
+import { createBidHistory, initBidding } from "../components/bidding";
 import { initCreditBalance } from "../components/layout";
 import {
   initListingGallery,

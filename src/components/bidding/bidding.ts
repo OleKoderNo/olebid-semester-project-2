@@ -1,5 +1,5 @@
-import { getSession } from "../auth/session";
-import type { ListingDetails } from "../types/listing";
+import { getSession } from "../../auth/session";
+import type { ListingDetails } from "../../types/listing";
 import { createBidForm } from "./bid-form";
 import { initBidSubmit } from "./bid-submit";
 

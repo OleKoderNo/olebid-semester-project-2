@@ -1,5 +1,5 @@
-import type { ListingBid } from "../types/listing";
-import { escapeHtml } from "../utils/escape-html";
+import type { ListingBid } from "../../types/listing";
+import { escapeHtml } from "../../utils/escape-html";
 
 const creditFormatter = new Intl.NumberFormat("en-US");
 

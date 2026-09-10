@@ -1,5 +1,5 @@
-import type { ListingDetails } from "../types/listing";
-import { escapeHtml } from "../utils/escape-html";
+import type { ListingDetails } from "../../types/listing";
+import { escapeHtml } from "../../utils/escape-html";
 
 const numberFormatter = new Intl.NumberFormat("en-US");
 
