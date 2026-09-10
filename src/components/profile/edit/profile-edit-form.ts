@@ -1,5 +1,5 @@
-import type { AuctionProfile } from "../types/profile";
-import { escapeHtml } from "../utils/escape-html";
+import type { AuctionProfile } from "../../../types/profile";
+import { escapeHtml } from "../../../utils/escape-html";
 
 interface ImageFieldOptions {
   label: string;

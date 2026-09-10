@@ -1,4 +1,4 @@
-import { createProfileImage, initProfileImages } from "./profile";
+import { createProfileImage, initProfileImages } from "../profile-image";
 
 interface PreviewOptions {
   variant: "avatar" | "banner";

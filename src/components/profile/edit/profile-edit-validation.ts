@@ -1,4 +1,4 @@
-import { canLoadImage } from "../utils/can-load-image";
+import { canLoadImage } from "../../../utils/can-load-image";
 
 interface ImageCheck {
   url: string;

@@ -1,6 +1,9 @@
-import { updateProfile } from "../api";
-import { getSession } from "../auth/session";
-import type { AuctionProfile, UpdateProfileRequest } from "../types/profile";
+import { updateProfile } from "../../../api";
+import { getSession } from "../../../auth/session";
+import type {
+  AuctionProfile,
+  UpdateProfileRequest,
+} from "../../../types/profile";
 import { initProfileEditValidation } from "./profile-edit-validation";
 
 /**

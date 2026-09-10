@@ -1,7 +1,9 @@
 import type { AuctionProfile } from "../../types/profile";
-import { createProfileEditForm } from "../profile-edit-form";
-import { initProfileEditPreviews } from "../profile-edit-preview";
-import { initProfileEditSubmit } from "../profile-edit-submit";
+import {
+  createProfileEditForm,
+  initProfileEditPreviews,
+  initProfileEditSubmit,
+} from "./edit";
 import { initProfileImages } from "./profile-image";
 import { createProfileSummary } from "./profile-summary";
 import { initUnsavedChanges } from "../shared";
