@@ -3,6 +3,7 @@ import {
   createListingForm,
   initListingImages,
   initListingDetailsValidation,
+  initListingImageValidation,
 } from "../components/listings/form";
 import { initUnsavedChanges } from "../components/shared";
 
@@ -39,6 +40,7 @@ export function initCreateListingPage(): void {
 
   initListingImages(images);
   initListingDetailsValidation(form);
+  initListingImageValidation(form);
 
   const unsavedChanges = initUnsavedChanges(
     form,
