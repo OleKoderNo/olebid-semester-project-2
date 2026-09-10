@@ -4,7 +4,9 @@ import { initCreditBalance } from "./credit-balance";
 
 /**
  * Renders account controls for the current stored session.
- * Loads the credit balance and connects logout for signed-in users.
+ *
+ * Signed-in users receive listing creation and profile links,
+ * their credit balance, and a logout button.
  *
  * @param header - The rendered shared header.
  * @throws If the account-controls container is missing.
@@ -54,6 +56,13 @@ export function initAuthNavigation(header: HTMLElement): void {
       aria-atomic="true"
       class="inline-flex min-h-12 min-w-28 items-center text-sm leading-6 text-muted"
     ></span>
+
+    <a
+      href="/listing/create/"
+      class="flex min-h-12 items-center rounded-lg py-3 font-medium text-burgundy underline-offset-4 hover:underline"
+    >
+      Create listing
+    </a>
 
     <a
       href="/profile/"
