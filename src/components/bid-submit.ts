@@ -1,9 +1,10 @@
 import { placeBid } from "../api";
 import { getSession } from "../auth/session";
 import type { ListingDetails } from "../types/listing";
+import { initUnsavedChanges } from "./unsaved-changes";
 
 /**
- * Connects bid validation and submission.
+ * Connects bid validation, submission and unsaved-change warnings.
  *
  * @param form - Rendered bid form.
  * @param listing - Auction receiving the bid.
@@ -24,6 +25,8 @@ export function initBidSubmit(
   }
 
   const elements = { input, button, error, status };
+  const unsavedChanges = initUnsavedChanges(form);
+
   let isSubmitting = false;
   let bidAccepted = false;
 
@@ -82,7 +85,9 @@ export function initBidSubmit(
 
     try {
       await placeBid(listing.id, amount);
+
       bidAccepted = true;
+      unsavedChanges.destroy();
     } catch (error: unknown) {
       if (form.isConnected) {
         elements.status.textContent = "";
