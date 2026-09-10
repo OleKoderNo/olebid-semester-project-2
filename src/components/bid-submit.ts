@@ -25,7 +25,11 @@ export function initBidSubmit(
   }
 
   const elements = { input, button, error, status };
-  const unsavedChanges = initUnsavedChanges(form);
+
+  const unsavedChanges = initUnsavedChanges(
+    form,
+    "You haven’t placed your bid yet. Leave without submitting it?",
+  );
 
   let isSubmitting = false;
   let bidAccepted = false;
