@@ -3,12 +3,13 @@ import { createBidHistory, initBidding } from "../components/bidding";
 import { initCreditBalance } from "../components/layout";
 import {
   initListingGallery,
+  createListingOwnerActions,
   createListingSummary,
 } from "../components/listings";
 
 /**
  * Loads the auction identified by the URL's id parameter.
- * Includes summary, gallery, bid history and bidding controls.
+ * Includes summary, gallery, owner actions, bid history and bidding controls.
  */
 export function initListingDetailsPage(): void {
   const content = document.querySelector<HTMLDivElement>("#listing-details");
@@ -82,6 +83,7 @@ export function initListingDetailsPage(): void {
 
       elements.content.innerHTML = `
         ${createListingSummary(data)}
+        ${createListingOwnerActions(data)}
         ${createBidHistory(data.bids, data._count.bids)}
       `;
 
