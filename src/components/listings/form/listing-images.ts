@@ -1,12 +1,23 @@
+import type { ListingMedia } from "../../../types/listing";
 import { createListingImageField } from "./listing-image-field";
 import { initListingImagePreview } from "./listing-image-preview";
 
 /**
  * Initializes repeatable image fields for a listing form.
  *
+ * Existing images are inserted in their original order without moving
+ * focus or announcing changes. Initialize the unsaved-change guard
+ * after this function so prefilled images become part of its baseline.
+ *
+ * Call once after the image-controls container is rendered.
+ *
  * @param container - The form's image-controls container.
+ * @param media - Existing listing images; omit when creating a listing.
  */
-export function initListingImages(container: HTMLElement): void {
+export function initListingImages(
+  container: HTMLElement,
+  media: ListingMedia[] = [],
+): void {
   container.innerHTML = `
     <section>
       <h2 class="font-heading text-2xl font-semibold">Images</h2>
@@ -48,41 +59,67 @@ export function initListingImages(container: HTMLElement): void {
   let nextId = 1;
 
   /**
-   * Notifies form listeners when image fields are added or removed.
+   * Notifies form listeners when users add or remove image fields.
    */
   function notifyChange(): void {
     container.dispatchEvent(new Event("input", { bubbles: true }));
   }
 
-  elements.addButton.addEventListener("click", () => {
+  /**
+   * Appends an image field and connects its preview and removal button.
+   *
+   * Only user-initiated additions move focus and announce a change.
+   */
+  function appendImage(image?: ListingMedia, userInitiated = false): void {
     const id = nextId++;
 
     elements.fields.insertAdjacentHTML(
       "beforeend",
-      createListingImageField(id),
+      createListingImageField(id, image),
     );
 
     const field = elements.fields.lastElementChild;
 
     if (!(field instanceof HTMLElement)) {
-      return;
+      throw new Error("Unable to render the listing image field.");
     }
 
     initListingImagePreview(field);
 
+    const urlInput = field.querySelector<HTMLInputElement>("[data-image-url]");
     const removeButton = field.querySelector<HTMLButtonElement>(
       "[data-remove-image]",
     );
 
-    removeButton?.addEventListener("click", () => {
+    if (!urlInput || !removeButton) {
+      throw new Error("Listing image field is missing required controls.");
+    }
+
+    removeButton.addEventListener("click", () => {
       field.remove();
       elements.addButton.focus();
       elements.status.textContent = `Image ${id} removed.`;
       notifyChange();
     });
 
-    field.querySelector<HTMLInputElement>("[data-image-url]")?.focus();
-    elements.status.textContent = `Image ${id} added.`;
-    notifyChange();
+    if (image) {
+      // Start the prefilled preview using its existing change listener.
+      // This event stays on the input and does not bubble to the form.
+      urlInput.dispatchEvent(new Event("change"));
+    }
+
+    if (userInitiated) {
+      urlInput.focus();
+      elements.status.textContent = `Image ${id} added.`;
+      notifyChange();
+    }
+  }
+
+  media.forEach((image) => {
+    appendImage(image);
+  });
+
+  elements.addButton.addEventListener("click", () => {
+    appendImage(undefined, true);
   });
 }

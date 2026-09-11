@@ -1,10 +1,19 @@
+import type { ListingMedia } from "../../../types/listing";
+import { escapeHtml } from "../../../utils/escape-html";
+
 /**
- * Creates an image URL field, description field and preview.
+ * Creates an image URL field, description field, and preview.
+ *
+ * Existing image values are escaped before insertion into attributes.
  *
  * @param id - Unique identifier for this image field.
+ * @param image - Existing image to prefill when editing.
  * @returns Image-field markup.
  */
-export function createListingImageField(id: number): string {
+export function createListingImageField(
+  id: number,
+  image?: ListingMedia,
+): string {
   const inputClasses =
     "mt-2 block min-h-12 w-full rounded-lg border border-muted bg-surface px-4 py-3 text-ink focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-ink";
 
@@ -25,6 +34,7 @@ export function createListingImageField(id: number): string {
             data-image-url
             name="imageUrl-${id}"
             type="url"
+            value="${escapeHtml(image?.url ?? "")}"
             aria-describedby="listing-image-hint-${id}"
             class="${inputClasses}"
           />
@@ -44,6 +54,7 @@ export function createListingImageField(id: number): string {
             data-image-alt
             name="imageAlt-${id}"
             type="text"
+            value="${escapeHtml(image?.alt ?? "")}"
             class="${inputClasses}"
           />
         </label>
