@@ -21,6 +21,10 @@ export async function deleteListing(id: string): Promise<void> {
     throw new Error("A listing ID is required.");
   }
 
+  // TODO: Block deletion of listings with bids in the UI and recheck before
+  // deleting. Full protection against bids arriving during deletion requires
+  // the API to enforce this rule as part of the delete operation.
+
   const response = await authenticatedRequest(
     `/auction/listings/${encodeURIComponent(listingId)}`,
     {
