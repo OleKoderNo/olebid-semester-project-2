@@ -58,17 +58,17 @@ export function initAuthNavigation(header: HTMLElement): void {
     ></span>
 
     <a
-      href="/listing/create/"
-      class="flex min-h-12 items-center justify-center rounded-lg bg-burgundy px-6 py-3 font-medium text-surface underline-offset-4 hover:bg-burgundy-hover md:justify-start md:bg-transparent md:px-0 md:text-burgundy md:hover:bg-transparent md:hover:underline"
-    >
-      Create listing
-    </a>
-
-    <a
       href="/profile/"
       class="flex min-h-12 items-center justify-center rounded-lg border border-burgundy px-6 py-3 font-medium text-burgundy underline-offset-4 hover:bg-burgundy-soft md:justify-start md:border-0 md:px-0 md:hover:bg-transparent md:hover:underline"
     >
       My profile
+    </a>
+
+    <a
+      href="/listing/create/"
+      class="flex min-h-12 items-center justify-center rounded-lg bg-burgundy px-6 py-3 font-medium text-surface underline-offset-4 hover:bg-burgundy-hover md:justify-start md:bg-transparent md:px-0 md:text-burgundy md:hover:bg-transparent md:hover:underline"
+    >
+      Create listing
     </a>
 
     <button
