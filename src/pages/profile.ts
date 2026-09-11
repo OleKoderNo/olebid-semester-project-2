@@ -4,6 +4,7 @@ import { getSession } from "../auth/session";
 import {
   initProfileListings,
   initProfileBids,
+  initProfileDeletionFeedback,
 } from "../components/profile/activity";
 import { initProfileEditor } from "../components/profile";
 
@@ -38,6 +39,8 @@ export function initProfilePage(): void {
 
   initProfileListings(listingsContainer, initialSession.name);
   initProfileBids(bidsContainer, initialSession.name);
+
+  const focusAfterDeletion = initProfileDeletionFeedback(listingsContainer);
 
   let isLoading = false;
 
@@ -136,5 +139,6 @@ export function initProfilePage(): void {
     }
   });
 
-  void loadProfile();
+  // Focus the destination after profile rendering has settled.
+  void loadProfile().then(focusAfterDeletion);
 }

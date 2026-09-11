@@ -77,9 +77,10 @@ export function initListingDelete(
       elements.status.textContent =
         "Your listing was deleted. Opening your profile…";
 
-      window.location.assign("/profile/");
+      window.location.assign("/profile/?listingDeleted=1");
     } catch (error: unknown) {
-      elements.status.textContent = "";
+      elements.status.textContent =
+        "Your listing was deleted. Opening My listings…";
 
       elements.error.textContent = deleted
         ? "Your listing was deleted, but your profile could not be opened. Use My profile to view your remaining listings."
