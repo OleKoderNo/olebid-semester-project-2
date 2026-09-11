@@ -1,30 +1,34 @@
 import { localDateTimeToIso } from "../../../utils/date-time";
 
 /**
- * Connects title and deadline validation for a listing form.
+ * Connects title validation and, when creating, deadline validation.
  *
- * The deadline is interpreted in the creator's device timezone.
- * Validation is repeated when requested because a previously valid
- * deadline may have passed while the form was open.
+ * Editing does not require a deadline input because the update request
+ * does not include the auction deadline.
  *
- * @param form - Form containing the title and deadline inputs.
- * @returns A function that updates the fields' validation messages.
- * @throws If required fields are missing.
+ * @param form - The rendered listing form.
+ * @param mode - Whether the form creates or edits a listing.
+ * @returns A function that refreshes validity before submission.
+ * @throws If controls required by the selected mode are missing.
  */
 export function initListingDetailsValidation(
   form: HTMLFormElement,
+  mode: "create" | "edit" = "create",
 ): () => void {
   const title = form.querySelector<HTMLInputElement>('[name="title"]');
   const deadline = form.querySelector<HTMLInputElement>('[name="endsAt"]');
 
-  if (!title || !deadline) {
-    throw new Error("Listing form is missing its title or deadline.");
+  if (!title || (mode === "create" && !deadline)) {
+    throw new Error("Listing form is missing required validation controls.");
   }
 
-  const fields = { title, deadline };
+  const fields = {
+    title,
+    deadline: mode === "create" ? deadline : null,
+  };
 
   /**
-   * Rejects titles containing only whitespace.
+   * Rejects empty titles, including titles containing only whitespace.
    */
   function validateTitle(): void {
     fields.title.setCustomValidity(
@@ -33,21 +37,27 @@ export function initListingDetailsValidation(
   }
 
   /**
-   * Checks that the local deadline represents a future instant.
+   * Checks that a creation deadline represents a valid future instant.
+   *
+   * Converts device-local input to UTC before comparing timestamps.
    */
   function validateDeadline(): void {
-    fields.deadline.setCustomValidity("");
+    const input = fields.deadline;
+
+    if (!input) {
+      return;
+    }
+
+    input.setCustomValidity("");
 
     try {
-      const timestamp = localDateTimeToIso(fields.deadline.value);
+      const timestamp = localDateTimeToIso(input.value);
 
       if (Date.parse(timestamp) <= Date.now()) {
-        fields.deadline.setCustomValidity(
-          "Choose an auction deadline in the future.",
-        );
+        input.setCustomValidity("Choose an auction deadline in the future.");
       }
     } catch (error: unknown) {
-      fields.deadline.setCustomValidity(
+      input.setCustomValidity(
         error instanceof Error
           ? error.message
           : "Enter a valid auction deadline.",
@@ -55,23 +65,31 @@ export function initListingDetailsValidation(
     }
   }
 
+  /**
+   * Refreshes validity, including deadlines that have passed since entry.
+   */
   function updateValidity(): void {
     validateTitle();
     validateDeadline();
   }
 
   fields.title.addEventListener("input", validateTitle);
-  fields.deadline.addEventListener("input", validateDeadline);
 
   fields.title.addEventListener("change", () => {
     validateTitle();
     fields.title.reportValidity();
   });
 
-  fields.deadline.addEventListener("change", () => {
-    validateDeadline();
-    fields.deadline.reportValidity();
-  });
+  const deadlineInput = fields.deadline;
+
+  if (deadlineInput) {
+    deadlineInput.addEventListener("input", validateDeadline);
+
+    deadlineInput.addEventListener("change", () => {
+      validateDeadline();
+      deadlineInput.reportValidity();
+    });
+  }
 
   updateValidity();
 

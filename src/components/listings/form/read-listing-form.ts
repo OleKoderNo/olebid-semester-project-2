@@ -1,75 +1,35 @@
-import type { CreateListingRequest } from "../../../types/listing-input";
-import type { ListingMedia } from "../../../types/listing";
+import type {
+  CreateListingRequest,
+  UpdateListingRequest,
+} from "../../../types/listing-input";
 import { localDateTimeToIso } from "../../../utils/date-time";
+import { readListingImages } from "./read-listing-images";
+
+type ListingFormValues = Required<UpdateListingRequest>;
 
 /**
- * Reads image URLs and descriptions in their displayed order.
+ * Reads the editable fields shared by creation and editing.
  *
- * Completely empty image fields are omitted. The first included image
- * becomes the listing's cover image.
+ * Trims surrounding whitespace and removes empty or duplicate tags.
+ * Tag capitalization and image order are preserved.
  *
- * @param form - Listing form containing the image fields.
- * @returns Images prepared for the API.
- * @throws If an image field is incomplete or its controls are missing.
+ * Empty descriptions and arrays are included so users can clear
+ * existing descriptions, tags, or images when saving an edit.
+ *
+ * Call after local validation and image checks succeed.
+ *
+ * @param form - The rendered listing form.
+ * @returns Editable listing values ready for an API request.
+ * @throws If required controls are missing or image fields are incomplete.
  */
-function readImages(form: HTMLFormElement): ListingMedia[] {
-  const fields = form.querySelectorAll<HTMLElement>(
-    "[data-listing-image-field]",
-  );
-
-  const images: ListingMedia[] = [];
-
-  fields.forEach((field) => {
-    const urlInput = field.querySelector<HTMLInputElement>("[data-image-url]");
-    const altInput = field.querySelector<HTMLInputElement>("[data-image-alt]");
-
-    if (!urlInput || !altInput) {
-      throw new Error("An image field is missing its controls.");
-    }
-
-    const url = urlInput.value.trim();
-    const alt = altInput.value.trim();
-
-    if (!url) {
-      if (alt) {
-        throw new Error("Add an image URL or clear its description.");
-      }
-
-      return;
-    }
-
-    images.push({ url, alt });
-  });
-
-  return images;
-}
-
-/**
- * Reads validated listing fields and prepares a creation request.
- *
- * Trims surrounding whitespace, splits comma-separated tags, removes
- * empty and duplicate tags, and preserves the displayed image order.
- * Tag spelling and capitalization are preserved.
- *
- * The deadline is entered in the creator's device-local time and
- * converted to a UTC ISO timestamp representing the same instant.
- *
- * Call after local validation and asynchronous image checks succeed.
- * This function does not send a request or change the form.
- *
- * @param form - The rendered listing creation form.
- * @returns Listing data ready to send to the API.
- * @throws If required controls are missing or the deadline is invalid.
- */
-export function readListingForm(form: HTMLFormElement): CreateListingRequest {
+export function readListingEditForm(form: HTMLFormElement): ListingFormValues {
   const title = form.querySelector<HTMLInputElement>('[name="title"]');
   const description = form.querySelector<HTMLTextAreaElement>(
     '[name="description"]',
   );
   const tags = form.querySelector<HTMLInputElement>('[name="tags"]');
-  const deadline = form.querySelector<HTMLInputElement>('[name="endsAt"]');
 
-  if (!title || !description || !tags || !deadline) {
+  if (!title || !description || !tags) {
     throw new Error("Listing form is missing required controls.");
   }
 
@@ -82,7 +42,29 @@ export function readListingForm(form: HTMLFormElement): CreateListingRequest {
     title: title.value.trim(),
     description: description.value.trim(),
     tags: [...new Set(tagValues)],
+    media: readListingImages(form),
+  };
+}
+
+/**
+ * Reads a validated creation form and includes its auction deadline.
+ *
+ * Converts the creator's device-local deadline to a UTC ISO timestamp
+ * representing the same instant.
+ *
+ * @param form - The rendered listing creation form.
+ * @returns Listing data ready for the creation API.
+ * @throws If controls are missing or the deadline is invalid.
+ */
+export function readListingForm(form: HTMLFormElement): CreateListingRequest {
+  const deadline = form.querySelector<HTMLInputElement>('[name="endsAt"]');
+
+  if (!deadline) {
+    throw new Error("Listing creation form is missing its deadline.");
+  }
+
+  return {
+    ...readListingEditForm(form),
     endsAt: localDateTimeToIso(deadline.value),
-    media: readImages(form),
   };
 }
