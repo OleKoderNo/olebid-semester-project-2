@@ -13,7 +13,7 @@ export function initNavigation(): void {
     return;
   }
 
-  const desktop = window.matchMedia("(min-width: 48rem)");
+  const desktop = window.matchMedia("(min-width: 64rem)");
   let isOpen = false;
 
   /**
