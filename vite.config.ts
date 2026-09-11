@@ -12,6 +12,7 @@ export default defineConfig({
         register: "register/index.html",
         login: "login/index.html",
         profile: "profile/index.html",
+        editListing: "listing/edit/index.html",
       },
     },
   },
