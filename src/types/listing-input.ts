@@ -8,3 +8,16 @@ export interface CreateListingRequest {
   tags?: string[];
   media?: ListingMedia[];
 }
+
+/**
+ * Fields supported by the listing update endpoint.
+ *
+ * Omitted fields retain their existing values.
+ * The auction deadline is excluded from the documented update fields.
+ */
+export interface UpdateListingRequest {
+  title?: string;
+  description?: string;
+  tags?: string[];
+  media?: ListingMedia[];
+}
