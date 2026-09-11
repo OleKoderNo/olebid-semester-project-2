@@ -59,14 +59,14 @@ export function initAuthNavigation(header: HTMLElement): void {
 
     <a
       href="/listing/create/"
-      class="flex min-h-12 items-center justify-center rounded-lg bg-burgundy px-6 py-3 font-medium text-surface underline-offset-4 hover:bg-burgundy-hover md:justify-start md:bg-transparent md:px-0 md:text-burgundy md:hover:bg-transparent md:hover:underline order-2 md:order-0"
+      class="flex min-h-12 items-center justify-center rounded-lg bg-burgundy px-6 py-3 font-medium text-surface underline-offset-4 hover:bg-burgundy-hover md:justify-start md:bg-transparent md:px-0 md:text-burgundy md:hover:bg-transparent md:hover:underline"
     >
       Create listing
     </a>
 
     <a
       href="/profile/"
-      class="flex min-h-12 items-center justify-center rounded-lg border border-burgundy px-6 py-3 font-medium text-burgundy underline-offset-4 hover:bg-burgundy-soft md:justify-start md:border-0 md:px-0 md:hover:bg-transparent md:hover:underline order-1 md:order-0"
+      class="flex min-h-12 items-center justify-center rounded-lg border border-burgundy px-6 py-3 font-medium text-burgundy underline-offset-4 hover:bg-burgundy-soft md:justify-start md:border-0 md:px-0 md:hover:bg-transparent md:hover:underline"
     >
       My profile
     </a>
@@ -74,7 +74,7 @@ export function initAuthNavigation(header: HTMLElement): void {
     <button
       data-logout
       type="button"
-      class="min-h-12 rounded-lg border border-burgundy px-6 py-3 font-medium text-burgundy hover:bg-burgundy-soft order-3 md:order-0"
+      class="min-h-12 rounded-lg border border-burgundy px-6 py-3 font-medium text-burgundy hover:bg-burgundy-soft"
     >
       Log out
     </button>
@@ -82,7 +82,7 @@ export function initAuthNavigation(header: HTMLElement): void {
     <span
       data-logout-error
       role="alert"
-      class="text-sm leading-6 text-error order-4 md:order-0"
+      class="text-sm leading-6 text-error"
     ></span>
   `;
 
