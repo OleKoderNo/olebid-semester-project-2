@@ -7,3 +7,4 @@ export { getProfileBids } from "./profile-bids";
 export { placeBid } from "./bids";
 export { createListing } from "./create-listing";
 export { updateListing } from "./update-listing";
+export { deleteListing } from "./delete-listing";
