@@ -43,19 +43,23 @@ export function initAuthNavigation(header: HTMLElement): void {
   }
 
   container.innerHTML = `
-    <span class="min-w-0 py-3 text-sm leading-6 text-muted wrap-anywhere">
-      Signed in as
-      <span class="font-medium text-ink">
-        ${escapeHtml(session.name)}
+    <div
+      class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded-lg bg-burgundy-soft px-4 py-3 md:justify-start md:gap-4 md:bg-transparent md:p-0"
+    >
+      <span class="min-w-0 text-sm leading-6 text-muted wrap-anywhere">
+        Signed in as
+        <span class="font-medium text-ink">
+          ${escapeHtml(session.name)}
+        </span>
       </span>
-    </span>
 
-    <span
-      data-credit-balance
-      role="status"
-      aria-atomic="true"
-      class="inline-flex min-h-12 min-w-28 items-center text-sm leading-6 text-muted"
-    ></span>
+      <span
+        data-credit-balance
+        role="status"
+        aria-atomic="true"
+        class="text-sm leading-6 font-medium text-burgundy md:inline-flex md:min-h-12 md:min-w-28 md:items-center md:font-normal md:text-muted"
+      ></span>
+    </div>
 
     <a
       href="/profile/"
