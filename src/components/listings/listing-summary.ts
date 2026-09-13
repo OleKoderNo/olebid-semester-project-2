@@ -52,58 +52,64 @@ export function createListingSummary(listing: ListingDetails): string {
     : "End date unavailable";
 
   return `
-    <h1 class="font-heading text-[2rem] leading-tight font-semibold wrap-anywhere md:text-[2.5rem]">
-      ${title}
-    </h1>
+  <h1 class="font-heading text-[2rem] leading-tight font-semibold wrap-anywhere md:text-[2.5rem]">
+    ${title}
+  </h1>
 
-    <p class="mt-4 text-base leading-6 text-muted wrap-anywhere">
-      Listed by ${seller}
-    </p>
+  <p class="mt-4 text-base leading-6 text-muted wrap-anywhere">
+    Listed by ${seller}
+  </p>
 
-    <div data-listing-gallery class="mt-8 max-w-200"></div>
+  <div class="mt-8 grid items-start gap-6 lg:grid-cols-3">
+    <div
+      data-listing-gallery
+      class="min-w-0 lg:col-span-2"
+    ></div>
 
-    <div class="mt-8 grid gap-6 lg:grid-cols-3">
-      <section class="min-w-0 rounded-xl bg-surface p-6 lg:col-span-2">
-        <h2 class="font-heading text-[1.75rem] leading-9 font-semibold">
-          About this item
-        </h2>
+    <section class="min-w-0 rounded-xl bg-surface p-6">
+      <h2 class="font-heading text-2xl leading-8 font-semibold">
+        Auction summary
+      </h2>
 
-        <p class="mt-4 text-lg leading-7 whitespace-pre-wrap wrap-anywhere">${description}</p>
-      </section>
+      <dl class="mt-6 space-y-6">
+        <div>
+          <dt class="text-sm leading-6 text-muted">
+            ${ended ? "Highest bid" : "Current bid"}
+          </dt>
+          <dd class="mt-1 text-xl leading-7 font-bold">
+            ${price}
+          </dd>
+        </div>
 
-      <section class="min-w-0 rounded-xl bg-surface p-6">
-        <h2 class="font-heading text-2xl leading-8 font-semibold">
-          Auction summary
-        </h2>
+        <div>
+          <dt class="text-sm leading-6 text-muted">
+            ${ended ? "Auction ended" : "Auction ends"}
+          </dt>
+          <dd class="mt-1 text-base leading-6 wrap-anywhere">
+            ${deadline}
+          </dd>
+        </div>
 
-        <dl class="mt-6 space-y-6">
-          <div>
-            <dt class="text-sm leading-6 text-muted">
-              ${ended ? "Highest bid" : "Current bid"}
-            </dt>
-            <dd class="mt-1 text-xl leading-7 font-bold">
-              ${price}
-            </dd>
-          </div>
+        <div>
+          <dt class="text-sm leading-6 text-muted">
+            Number of bids
+          </dt>
+          <dd class="mt-1 text-base leading-6">
+            ${creditFormatter.format(listing._count.bids)}
+          </dd>
+        </div>
+      </dl>
 
-          <div>
-            <dt class="text-sm leading-6 text-muted">
-              ${ended ? "Auction ended" : "Auction ends"}
-            </dt>
-            <dd class="mt-1 text-base leading-6">
-              ${deadline}
-            </dd>
-          </div>
+      <div data-bidding-controls class="mt-6"></div>
+    </section>
 
-          <div>
-            <dt class="text-sm leading-6 text-muted">Number of bids</dt>
-            <dd class="mt-1 text-base leading-6">
-              ${creditFormatter.format(listing._count.bids)}
-            </dd>
-          </div>
-        </dl>
-        <div data-bidding-controls class="mt-6"></div>
-      </section>
-    </div>
-  `;
+    <section class="min-w-0 rounded-xl bg-surface p-6 lg:col-span-2">
+      <h2 class="font-heading text-[1.75rem] leading-9 font-semibold">
+        About this item
+      </h2>
+
+      <p class="mt-4 text-lg leading-7 whitespace-pre-wrap wrap-anywhere">${description}</p>
+    </section>
+  </div>
+`;
 }
