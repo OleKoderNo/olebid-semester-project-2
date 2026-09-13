@@ -48,14 +48,14 @@ export function createListingFormDeadline(
         aria-describedby="listing-deadline-hint"
         class="${inputClasses}"
       />
-    </label>
 
-    <p
-      id="listing-deadline-hint"
-      class="text-sm leading-6 text-muted"
-    >
-      Enter the deadline in your device’s local time.
-      Each visitor will see it in their own local time.
-    </p>
+      <span
+        id="listing-deadline-hint"
+        class="mt-2 block text-sm leading-6 text-muted"
+      >
+        Enter the deadline in your device’s local time.
+        Each visitor will see it in their own local time.
+      </span>
+    </label>
   `;
 }
