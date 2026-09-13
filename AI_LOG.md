@@ -37,3 +37,15 @@ I asked ChatGPT for larger files to be split into smaller modules with clear res
 I also used ChatGPT to understand how device-local deadlines convert to UTC timestamps for the API and display in each visitor’s local time. I chose to use native JavaScript without adding a date dependency.
 
 I tested the completed creation flow and its validation, error handling, and navigation before preparing the pull request.
+
+2026-09-13 — Responsive design review
+
+During the testing and improvement of my app, I used ChatGPT as a support tool to review my work and help me identify potential issues and improvements.
+
+After completing my own testing across both mobile and desktop, I used ChatGPT to go through my testing results with me and double-check that I had covered everything I needed to test. During this review, ChatGPT helped me discover some wrapping issues with the descriptive text that was placed under the label tags. Based on the feedback, I moved the text to improve the layout.
+
+ChatGPT also recommended using a white background for the text areas in my forms and in the About Item section. I implemented this as a visual and layout improvement. These were two specific improvements that I discovered with the help of AI.
+
+I also asked ChatGPT to create a checklist of things I should check when reviewing all the pages of my site. While working through this checklist, I discovered that the delete button was not working. This allowed me to identify and catch a functional issue that I had previously missed.
+
+In addition to testing and design feedback, I used AI to help me write and improve commit messages, correct my written text, and improve comments in my code
