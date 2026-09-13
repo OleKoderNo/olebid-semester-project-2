@@ -5,6 +5,7 @@ import {
   initListingGallery,
   createListingOwnerActions,
   createListingSummary,
+  initListingDelete,
 } from "../components/listings";
 
 /**
@@ -104,6 +105,14 @@ export function initListingDetailsPage(): void {
 
       initListingGallery(gallery, data.media, title);
       initBidding(bidding, data, handleBidPlaced);
+
+      const ownerActions = elements.content.querySelector<HTMLElement>(
+        "[data-listing-owner-actions]",
+      );
+
+      if (ownerActions) {
+        initListingDelete(ownerActions, data);
+      }
 
       document.title = `${title} | OleBid`;
       elements.status.classList.add("sr-only");

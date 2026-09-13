@@ -4,3 +4,4 @@ export { createListingSummary } from "./listing-summary";
 export { initListingGallery } from "./listing-gallery";
 export { initListingFilters } from "./listing-filters";
 export { createListingOwnerActions } from "./listing-owner-actions";
+export { initListingDelete } from "./listing-delete";
