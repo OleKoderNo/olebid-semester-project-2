@@ -76,7 +76,10 @@ export function createProfileEditForm(profile: AuctionProfile): string {
   });
 
   return `
-    <form data-profile-edit-form class="space-y-6">
+    <form
+      data-profile-edit-form
+      class="space-y-6 rounded-xl bg-surface p-5 sm:p-8"
+    >
       <h2
         data-profile-edit-heading
         tabindex="-1"
