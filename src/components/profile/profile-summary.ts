@@ -32,10 +32,10 @@ export function createProfileSummary(profile: AuctionProfile): string {
     <div>
       ${banner}
 
-      <div class="relative -mt-14 flex min-w-0 flex-col gap-4 px-4 sm:flex-row sm:items-end sm:gap-6 md:-mt-18 md:px-6">
-        <div class="shrink-0 self-start rounded-full ring-4 ring-ivory">
-          ${avatar}
-        </div>
+      <div class="relative -mt-14 flex min-w-0 flex-col gap-4 sm:flex-row sm:items-end sm:gap-6 sm:px-4 md:-mt-18 md:px-6">
+        <div class="ml-4 shrink-0 self-start rounded-full ring-4 ring-ivory sm:ml-0">
+        ${avatar}
+      </div>
 
         <div class="flex min-w-0 flex-1 flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <h2 class="min-w-0 font-heading text-3xl leading-tight font-semibold wrap-anywhere">

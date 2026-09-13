@@ -1,8 +1,11 @@
 <header class="bg-surface px-4">
   <div
-    class="mx-auto flex min-h-20 w-full max-w-300 flex-wrap items-center justify-between gap-4 py-4 md:min-h-24"
+    class="mx-auto flex min-h-20 w-full max-w-300 flex-wrap items-center justify-between gap-4 py-4 lg:min-h-24 lg:flex-nowrap"
   >
-    <a href="/" class="font-heading text-[2rem] leading-tight font-bold">
+    <a
+      href="/"
+      class="shrink-0 font-heading text-[2rem] leading-tight font-bold"
+    >
       OleBid
     </a>
 
@@ -20,13 +23,13 @@
     <nav
       id="main-navigation"
       aria-label="Main navigation"
-      class="w-full md:w-auto"
+      class="w-full lg:w-auto"
     >
-      <ul class="flex flex-col gap-3 md:flex-row md:items-center md:gap-4">
+      <ul class="flex flex-col gap-3 lg:flex-row lg:items-center lg:gap-4">
         <li>
           <a
             href="/"
-            class="flex min-h-12 items-center rounded-lg py-3 text-burgundy"
+            class="flex min-h-12 items-center justify-center rounded-lg border border-burgundy px-6 py-3 text-burgundy hover:bg-burgundy-soft lg:justify-start lg:border-0 lg:px-0 lg:hover:bg-transparent"
           >
             Browse auctions
           </a>
@@ -34,7 +37,7 @@
 
         <li
           data-account-controls
-          class="flex min-w-0 flex-col gap-3 md:flex-row md:items-center md:gap-4"
+          class="flex min-w-0 flex-col gap-3 lg:flex-row lg:items-center lg:gap-4"
         ></li>
       </ul>
     </nav>

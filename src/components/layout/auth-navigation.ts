@@ -43,32 +43,36 @@ export function initAuthNavigation(header: HTMLElement): void {
   }
 
   container.innerHTML = `
-    <span class="min-w-0 py-3 text-sm leading-6 text-muted wrap-anywhere">
-      Signed in as
-      <span class="font-medium text-ink">
-        ${escapeHtml(session.name)}
-      </span>
-    </span>
-
-    <span
-      data-credit-balance
-      role="status"
-      aria-atomic="true"
-      class="inline-flex min-h-12 min-w-28 items-center text-sm leading-6 text-muted"
-    ></span>
-
-    <a
-      href="/listing/create/"
-      class="flex min-h-12 items-center rounded-lg py-3 font-medium text-burgundy underline-offset-4 hover:underline"
+    <div
+      class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded-lg bg-burgundy-soft px-4 py-3 lg:justify-start lg:gap-4 lg:bg-transparent lg:p-0"
     >
-      Create listing
-    </a>
+      <span class="min-w-0 text-sm leading-6 text-muted wrap-anywhere">
+        Signed in as
+        <span class="font-medium text-ink">
+          ${escapeHtml(session.name)}
+        </span>
+      </span>
+
+      <span
+        data-credit-balance
+        role="status"
+        aria-atomic="true"
+        class="text-sm leading-6 font-medium text-burgundy lg:inline-flex lg:min-h-12 lg:min-w-28 lg:items-center lg:font-normal lg:text-muted"
+      ></span>
+    </div>
 
     <a
       href="/profile/"
-      class="flex min-h-12 items-center rounded-lg py-3 font-medium text-burgundy underline-offset-4 hover:underline"
+      class="flex min-h-12 items-center justify-center rounded-lg border border-burgundy px-6 py-3 font-medium text-burgundy underline-offset-4 hover:bg-burgundy-soft lg:justify-start lg:border-0 lg:px-0 lg:hover:bg-transparent lg:hover:underline"
     >
       My profile
+    </a>
+
+    <a
+      href="/listing/create/"
+      class="flex min-h-12 items-center justify-center rounded-lg bg-burgundy px-6 py-3 font-medium text-surface underline-offset-4 hover:bg-burgundy-hover lg:justify-start lg:bg-transparent lg:px-0 lg:text-burgundy lg:hover:bg-transparent lg:hover:underline"
+    >
+      Create listing
     </a>
 
     <button

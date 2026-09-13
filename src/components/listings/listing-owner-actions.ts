@@ -20,6 +20,9 @@ export function createListingOwnerActions(listing: ListingDetails): string {
 
   const editUrl = `/listing/edit/?id=${encodeURIComponent(listing.id)}`;
 
+  // FIXME: Delete listing is reported as not working. Investigate the
+  // initListingDelete connection, confirmation flow, and API request.
+  // Verify cancellation, error feedback, and redirect after successful deletion.
   return `
     <div data-listing-owner-actions class="mt-6">
       <div class="flex flex-wrap gap-3">

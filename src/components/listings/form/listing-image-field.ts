@@ -38,14 +38,14 @@ export function createListingImageField(
             aria-describedby="listing-image-hint-${id}"
             class="${inputClasses}"
           />
-        </label>
 
-        <p
-          id="listing-image-hint-${id}"
-          class="text-sm leading-6 text-muted"
-        >
-          Use a direct link to a publicly accessible image.
-        </p>
+          <span
+            id="listing-image-hint-${id}"
+            class="mt-2 block text-sm leading-6 text-muted"
+          >
+            Use a direct link to a publicly accessible image.
+          </span>
+        </label>
 
         <label class="block">
           <span class="text-sm font-medium">Image description</span>
