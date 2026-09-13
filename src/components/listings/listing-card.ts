@@ -118,7 +118,7 @@ export function createListingCard(listing: Listing): string {
         <a
           href="${href}"
           aria-label="View auction: ${title}"
-          class="mt-auto inline-flex min-h-12 items-center justify-center rounded-lg border border-burgundy px-6 py-3 font-medium text-burgundy hover:bg-burgundy-soft"
+          class="mt-auto inline-flex min-h-12 w-full items-center justify-center rounded-lg border border-burgundy px-6 py-3 font-medium text-burgundy hover:bg-burgundy-soft sm:w-auto"
         >
           View auction
         </a>
