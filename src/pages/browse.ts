@@ -99,6 +99,7 @@ export function initBrowsePage(): void {
   let currentSort: ListingSort = "newest";
   let currentFilters: ListingFilters = { status: "active", tag: "" };
   let activeController: AbortController | undefined;
+  let shouldFocusResults = false;
 
   // FIXME: After pagination finishes rendering, position "Available auctions"
   // near the top of the viewport. Currently, the filters remain above it.
@@ -107,7 +108,7 @@ export function initBrowsePage(): void {
     paginationContainer,
     (page) => {
       requestedPage = page;
-      heading.focus();
+      shouldFocusResults = true;
       void loadListings();
     },
     "Auction results pages",
@@ -170,6 +171,15 @@ export function initBrowsePage(): void {
       renderListingGrid(grid, response.data);
       status.textContent = getListingStatus(response, query, filters);
       pagination.update(response.meta);
+
+      if (shouldFocusResults) {
+        heading.focus({ preventScroll: true });
+        heading.scrollIntoView({
+          block: "start",
+          behavior: "auto",
+        });
+        shouldFocusResults = false;
+      }
 
       if (document.activeElement === retryButton) {
         heading.focus();
