@@ -30,7 +30,10 @@ export function createListingForm(listing?: Listing): string {
     : "/profile/";
 
   return `
-    <form data-listing-form class="space-y-6">
+    <form
+      data-listing-form
+      class="space-y-6 rounded-xl bg-surface p-5 sm:p-8"
+    >
       <p class="text-sm leading-6 text-muted">
         ${
           isEditing
