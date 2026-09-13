@@ -79,12 +79,10 @@ export function initListingDelete(
 
       window.location.assign("/profile/?listingDeleted=1");
     } catch (error: unknown) {
-      elements.status.textContent =
-        "Your listing was deleted. Opening My listings…";
+      elements.status.textContent = "";
 
-      elements.error.textContent = deleted
-        ? "Your listing was deleted, but your profile could not be opened. Use My profile to view your remaining listings."
-        : error instanceof Error
+      elements.error.textContent =
+        error instanceof Error
           ? error.message
           : "Unable to delete your listing. Please try again.";
     } finally {
