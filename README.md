@@ -148,9 +148,7 @@ The production build and TypeScript checks pass locally.
 
 ## Image attribution
 
-Images used in the application come from publicly accessible image sources and API listing data. Attribution is provided where required by the source.
-
-Add any specific source credits here if required by the images used in your final deployment.
+Images used in the application come from publicly accessible image sources, user-created listings, and API listing data. Image descriptions and alternative text are provided where applicable.
 
 ## AI use
 
