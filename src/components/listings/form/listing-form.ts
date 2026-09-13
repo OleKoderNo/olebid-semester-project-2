@@ -80,14 +80,14 @@ export function createListingForm(listing?: Listing): string {
           aria-describedby="listing-tags-hint"
           class="${inputClasses}"
         />
-      </label>
 
-      <p
-        id="listing-tags-hint"
-        class="text-sm leading-6 text-muted"
-      >
-        Separate tags with commas, for example: photography, cameras.
-      </p>
+        <span
+          id="listing-tags-hint"
+          class="mt-2 block text-sm leading-6 text-muted"
+        >
+          Separate tags with commas, for example: photography, cameras.
+        </span>
+      </label>
 
       ${createListingFormDeadline(inputClasses, listing?.endsAt)}
 
