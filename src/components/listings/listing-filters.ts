@@ -19,9 +19,9 @@ export function initListingFilters(
         <div data-status class="min-w-0"></div>
 
         <label class="block min-w-0">
-          <span class="mb-2 block text-base leading-6 font-medium">
+          <p class="mb-2 block text-base leading-6 font-medium">
             Filter by tag
-          </span>
+          </p>
 
           <input
             data-tag
@@ -31,20 +31,19 @@ export function initListingFilters(
             aria-describedby="listing-tag-hint"
             class="min-h-13.5 w-full rounded-lg border border-muted bg-surface px-4 py-3 text-base placeholder:text-muted focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-ink"
           >
+          <p
+            id="listing-tag-hint"
+            class="text-sm leading-6 text-muted"
+          >
+            Enter one tag. Leave it blank to include all tags.
+          </p>
         </label>
       </div>
 
-      <div class="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <p
-          id="listing-tag-hint"
-          class="text-sm leading-6 text-muted"
-        >
-          Enter one tag. Leave it blank to include all tags.
-        </p>
-
+      <div class="mt-3 flex justify-end">
         <button
           type="submit"
-          class="min-h-13.5 shrink-0 rounded-lg border border-burgundy px-6 py-3 font-medium text-burgundy hover:bg-burgundy-soft"
+          class="min-h-13.5 w-full shrink-0 rounded-lg border border-burgundy px-6 py-3 font-medium text-burgundy hover:bg-burgundy-soft sm:w-auto"
         >
           Apply filters
         </button>
