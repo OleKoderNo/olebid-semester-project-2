@@ -14,14 +14,14 @@ interface PaginationControls {
  */
 function createPaginationMarkup(label: string): string {
   const buttonClasses =
-    "min-h-12 rounded-lg border border-burgundy px-6 py-3 " +
+    "min-h-12 rounded-lg border border-burgundy px-3 py-3 sm:px-6" +
     "font-medium text-burgundy hover:bg-burgundy-soft " +
     "disabled:cursor-not-allowed disabled:border-disabled " +
     "disabled:bg-disabled disabled:text-muted";
 
   return `
     <nav aria-label="${escapeHtml(label)}" hidden>
-      <div class="flex flex-wrap items-center justify-center gap-4">
+      <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-4">
         <button
           data-previous
           type="button"
