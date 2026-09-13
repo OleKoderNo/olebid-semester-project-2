@@ -38,7 +38,7 @@ I also used ChatGPT to understand how device-local deadlines convert to UTC time
 
 I tested the completed creation flow and its validation, error handling, and navigation before preparing the pull request.
 
-2026-09-13 — Responsive design review
+### 2026-09-13 — Responsive design review
 
 During the testing and improvement of my app, I used ChatGPT as a support tool to review my work and help me identify potential issues and improvements.
 
