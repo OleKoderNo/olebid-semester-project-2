@@ -100,6 +100,9 @@ export function initBrowsePage(): void {
   let currentFilters: ListingFilters = { status: "active", tag: "" };
   let activeController: AbortController | undefined;
 
+  // FIXME: After pagination finishes rendering, position "Available auctions"
+  // near the top of the viewport. Currently, the filters remain above it.
+  // Preserve keyboard focus on the results heading when adjusting scrolling.
   const pagination = initPagination(
     paginationContainer,
     (page) => {
