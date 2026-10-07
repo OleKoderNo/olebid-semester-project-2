@@ -72,6 +72,7 @@ Create a local `.env` file based on `.env.example` and add your Noroff API key:
 
 ````env
 VITE_NOROFF_API_KEY=your_api_key_here
+````
 
 Never commit the real API key. Environment files containing secrets are excluded from version control.
 
